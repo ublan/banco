@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MostrarCuentas {
-    private static final String NOMBRE_ARCHIVO = "C:\\Users\\joaqu\\Desktop\\Lab-lll\\tup2024-master\\src\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt";
+    private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Cuentas.txt";
 
     public static void mostrarCuentas(String dni) {
         List<String> cuentas = new ArrayList<>();

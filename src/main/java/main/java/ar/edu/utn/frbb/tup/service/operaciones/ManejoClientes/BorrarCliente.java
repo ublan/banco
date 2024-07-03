@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.*;
 
 public class BorrarCliente {
-    private static final String NOMBRE_ARCHIVO = "C:\\Users\\joaqu\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
+    private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
 
     public static ResponseEntity<String> borrarCliente(String dni) {
         List<String> clientes = new ArrayList<>();

@@ -1,8 +1,8 @@
 package main.java.ar.edu.utn.frbb.tup.model;
 public enum TipoCuenta {
 
-    CORRIENTE("C"),
-    AHORRO("A");
+    CORRIENTE("CORRIENTE"),
+    AHORRO("AHORRO");
 
     private final String descripcion;
 

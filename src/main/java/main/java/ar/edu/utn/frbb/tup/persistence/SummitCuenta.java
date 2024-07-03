@@ -14,8 +14,8 @@ import main.java.ar.edu.utn.frbb.tup.model.*;
 @Repository
 
 public class SummitCuenta {
-    private static final String NOMBRE_ARCHIVO = "C:\\Users\\joaqu\\Desktop\\Lab-lll\\tup2024-master\\src\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt"; //cambiar aca 
-    private static final String NOMBRE_ARCHIVO1 = "C:\\Users\\joaqu\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt"; // cambiar
+    private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\tup2024-master\\src\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt"; //cambiar aca 
+    private static final String NOMBRE_ARCHIVO1 = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt"; // cambiar
 
     public static void escribirEnArchivo(Cuenta cuenta) {
         boolean archivoNuevo = !(new File(NOMBRE_ARCHIVO).exists());
@@ -65,7 +65,7 @@ public class SummitCuenta {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null; // Si no se encuentra el cliente
+        return null; 
     }
 
 }
