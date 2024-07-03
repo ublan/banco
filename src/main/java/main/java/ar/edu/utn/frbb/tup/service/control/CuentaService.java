@@ -1,5 +1,5 @@
 package main.java.ar.edu.utn.frbb.tup.service.control;
-
+import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,7 +8,7 @@ import java.util.List;
 import main.java.ar.edu.utn.frbb.tup.model.*;
 import main.java.ar.edu.utn.frbb.tup.persistence.*;
 import main.java.ar.edu.utn.frbb.tup.exception.*;
-
+@Service
 public class CuentaService {
     
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\tup2024-master\\src\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt"; //cambiar aca 
