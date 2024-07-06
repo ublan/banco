@@ -4,15 +4,16 @@ import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
 import main.java.ar.edu.utn.frbb.tup.persistence.SummitCuenta;
 import main.java.ar.edu.utn.frbb.tup.persistence.SummitCliente;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
-import main.java.ar.edu.utn.frbb.tup.exception.InvalidCurrencyException;
+
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
+import main.java.ar.edu.utn.frbb.tup.model.TipoCuenta;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CuentaService {
 
-    public void darDeAltaCuenta(Cuenta cuenta, String dni) throws ClienteAlreadyExistsException, InvalidCurrencyException {
+    public void darDeAltaCuenta(Cuenta cuenta, String dni) throws ClienteAlreadyExistsException {
         Cliente clienteExistente = SummitCliente.findByDni(dni);
         if (clienteExistente == null) {
             throw new IllegalArgumentException("El titular de la cuenta no existe");
@@ -25,7 +26,11 @@ public class CuentaService {
             throw new IllegalArgumentException("El nombre de la cuenta es obligatorio");
         }
 
-        if (cuenta.getTipoCuenta() == null || (!cuenta.getTipoCuenta().equals("CORRIENTE") || !cuenta.getTipoCuenta().equals("AHORRO"))) {
+        if (cuenta.getTipoCuenta() == null) {
+            throw new IllegalArgumentException("El tipo de cuenta es obligatorio");
+        }
+
+        if (!cuenta.getTipoCuenta().equals(TipoCuenta.CORRIENTE) && !cuenta.getTipoCuenta().equals(TipoCuenta.AHORRO)) {
             throw new IllegalArgumentException("El tipo de cuenta debe ser CORRIENTE o AHORRO");
         }
 
@@ -37,8 +42,8 @@ public class CuentaService {
             throw new IllegalArgumentException("La moneda de la cuenta es obligatoria");
         }
 
-        if (!cuenta.getMoneda().equals("ARS") || !cuenta.getMoneda().equals("USD")) {
-            throw new InvalidCurrencyException("La moneda " + cuenta.getMoneda() + " no es aceptada. Solo se aceptan ARS y USD.");
+        if (!cuenta.getMoneda().equals("ARS") && !cuenta.getMoneda().equals("USD")) {
+            throw new IllegalArgumentException("La moneda " + cuenta.getMoneda() + " no es aceptada. Solo se aceptan ARS y USD.");
         }
 
         // Asignar CBU y fecha de creación
@@ -49,5 +54,6 @@ public class CuentaService {
         SummitCuenta.escribirEnArchivo(cuenta);
     }
 }
+
 
 
