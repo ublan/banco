@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitMovimientos;
+import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
 
 public class VerOperaciones {
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\joaqu\\Desktop\\Lab-lll\\tup2024-master\\src\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt";
@@ -20,7 +20,7 @@ public class VerOperaciones {
             while (CbuValidado == null) {
                 System.out.println("Ingrese el CBU para ver las operaciones: ");
                 CBU = scanner.nextLine();
-                CbuValidado = SummitMovimientos.buscarCuentaPorCBU(CBU);
+                CbuValidado = MovimientosDao.buscarCuentaPorCBU(CBU);
 
                 if (CbuValidado == null) {
                     System.out.println("El CBU ingresado no existe. Por favor, intente nuevamente.");

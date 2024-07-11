@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import main.java.ar.edu.utn.frbb.tup.model.*;
 
 @Repository
-public class SummitCliente {
+public class ClienteDao {
 
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
 

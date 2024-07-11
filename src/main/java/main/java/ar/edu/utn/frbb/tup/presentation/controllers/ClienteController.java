@@ -20,7 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
 import main.java.ar.edu.utn.frbb.tup.exception.ModificarClienteException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitCliente;
+import main.java.ar.edu.utn.frbb.tup.persistence.ClienteDao;
+
 
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class ClienteController {
 
     @GetMapping("/MostrarCliente/{id}")
     public ResponseEntity<Cliente> mostrarClientePorId(@PathVariable("id") String id) {
-        Cliente cliente = SummitCliente.findByDni(id);
+        Cliente cliente = ClienteDao.findByDni(id);
 
         if (cliente == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -77,7 +78,7 @@ public class ClienteController {
     public ResponseEntity<String> modificarCliente(@PathVariable("dni") String dni, @RequestBody Cliente cliente) { 
         try {
             // Verificar si el cliente existe y obtener su información actual
-            Cliente clienteExistente = SummitCliente.findByDni(dni);
+            Cliente clienteExistente = ClienteDao.findByDni(dni);
             if (clienteExistente == null) {
                 return new ResponseEntity<>("No se encontró ningún cliente con DNI " + dni, HttpStatus.NOT_FOUND);
             }
@@ -85,7 +86,7 @@ public class ClienteController {
             // Validar si se proporcionó un nuevo DNI y si es diferente al actual
             if (cliente.getDni() != null && !cliente.getDni().equals(clienteExistente.getDni())) {
                 // Verificar si el nuevo DNI ya está en uso por otro cliente
-                Cliente clienteConNuevoDni = SummitCliente.findByDni(cliente.getDni());
+                Cliente clienteConNuevoDni = ClienteDao.findByDni(cliente.getDni());
                 if (clienteConNuevoDni != null) {
                     return new ResponseEntity<>("Ya existe un cliente con DNI " + cliente.getDni(),
                             HttpStatus.CONFLICT);

@@ -11,7 +11,7 @@ public class ClienteService {
 
 
     public void darDeAltaCliente(Cliente cliente) throws ClienteAlreadyExistsException {
-        Cliente clienteExistente = SummitCliente.findByDni(String.valueOf(cliente.getDni()));
+        Cliente clienteExistente = ClienteDao.findByDni(String.valueOf(cliente.getDni()));
         if (cliente.getFechaNacimiento() == null) {
             throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
         }
@@ -33,7 +33,7 @@ public class ClienteService {
         }
 
         // Guardar cliente en la "base de datos" (archivo)
-        SummitCliente.escribirEnArchivo(cliente);
+        ClienteDao.escribirEnArchivo(cliente);
     }
 
     public void ValidardarDeAltaCliente(Cliente cliente) throws ModificarClienteException { //Excepcion para modificar un cliente existente

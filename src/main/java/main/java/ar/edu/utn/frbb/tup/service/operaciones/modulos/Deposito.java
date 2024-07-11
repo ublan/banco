@@ -1,6 +1,6 @@
 package main.java.ar.edu.utn.frbb.tup.service.operaciones.modulos;
 
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitMovimientos;
+import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
 
 public class Deposito {
 
@@ -13,7 +13,7 @@ public class Deposito {
         }
 
         // Registrar el movimiento
-        SummitMovimientos.registrarMovimiento(CBU, monto, TIPO_MOVIMIENTO);
+        MovimientosDao.registrarMovimiento(CBU, monto, TIPO_MOVIMIENTO);
     }
 
 }

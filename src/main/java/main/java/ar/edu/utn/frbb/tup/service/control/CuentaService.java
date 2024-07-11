@@ -1,8 +1,8 @@
 package main.java.ar.edu.utn.frbb.tup.service.control;
 
 import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitCuenta;
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitCliente;
+import main.java.ar.edu.utn.frbb.tup.persistence.CuentaDao;
+import main.java.ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
 
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class CuentaService {
 
     public void darDeAltaCuenta(Cuenta cuenta, String dni) throws ClienteAlreadyExistsException {
-        Cliente clienteExistente = SummitCliente.findByDni(dni);
+        Cliente clienteExistente = ClienteDao.findByDni(dni);
         if (clienteExistente == null) {
             throw new IllegalArgumentException("El titular de la cuenta no existe");
         }
@@ -51,7 +51,7 @@ public class CuentaService {
         cuenta.setFechaCreacion(LocalDateTime.now());
 
         // Guardar cuenta en la "base de datos" (archivo)
-        SummitCuenta.escribirEnArchivo(cuenta);
+        CuentaDao.escribirEnArchivo(cuenta);
     }
 }
 

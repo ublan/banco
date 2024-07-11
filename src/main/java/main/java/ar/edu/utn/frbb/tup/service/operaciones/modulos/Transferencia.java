@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitMovimientos;
+import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
 public class Transferencia {
     private static final String TIPO_MOVIMIENTO = "TRANSFERENCIA";
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Cuentas.txt";
@@ -22,7 +22,7 @@ public class Transferencia {
             while (CbuValidadoInicio == null) {
                 System.out.println("Ingrese su CBU: ");
                 CBU_INICIO = scanner.nextLine();
-                CbuValidadoInicio = SummitMovimientos.buscarCuentaPorCBU(CBU_INICIO);
+                CbuValidadoInicio = MovimientosDao.buscarCuentaPorCBU(CBU_INICIO);
 
                 if (CbuValidadoInicio == null) {
                     System.out.println("El CBU ingresado no existe. Por favor, intente nuevamente.");
@@ -58,7 +58,7 @@ public class Transferencia {
             while (CbuValidadoFinal == null) {
                 System.out.println("Ingrese el CBU del destinatario: ");
                 CBU_FINAL = scanner.nextLine();
-                CbuValidadoFinal = SummitMovimientos.buscarCuentaPorCBU(CBU_FINAL);
+                CbuValidadoFinal = MovimientosDao.buscarCuentaPorCBU(CBU_FINAL);
 
                 if (CbuValidadoFinal == null) {
                     System.out.println("El CBU ingresado no existe. Por favor, intente nuevamente.");
@@ -66,7 +66,7 @@ public class Transferencia {
             }
 
             // Registrar el movimiento
-            SummitMovimientos.registrarMovimientoTransferencia(CbuValidadoInicio, CbuValidadoFinal, monto,
+            MovimientosDao.registrarMovimientoTransferencia(CbuValidadoInicio, CbuValidadoFinal, monto,
                     TIPO_MOVIMIENTO);
 
             // Actualizar los saldos de las cuentas involucradas

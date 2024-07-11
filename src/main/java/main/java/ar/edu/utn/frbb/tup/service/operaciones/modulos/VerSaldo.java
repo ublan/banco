@@ -1,7 +1,7 @@
 package main.java.ar.edu.utn.frbb.tup.service.operaciones.modulos;
 
 import java.util.Scanner;
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitMovimientos;
+import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
 
 public class VerSaldo {
 
@@ -14,7 +14,7 @@ public class VerSaldo {
             while (CbuValidado == null) {
                 System.out.println("Ingrese el CBU para ver saldo: ");
                 CBU = scanner.nextLine();
-                CbuValidado = SummitMovimientos.buscarCuentaPorCBU(CBU);
+                CbuValidado = MovimientosDao.buscarCuentaPorCBU(CBU);
 
                 if (CbuValidado == null) {
                     System.out.println("El CBU ingresado no existe. Por favor, intente nuevamente.");
@@ -22,7 +22,7 @@ public class VerSaldo {
             }
 
             // Una vez validado el CBU, obtener y mostrar el saldo
-            double saldo = SummitMovimientos.obtenerSaldo(CbuValidado);
+            double saldo = MovimientosDao.obtenerSaldo(CbuValidado);
 
             System.out.println("*****************************************");
             System.out.println("*    SALDO DISPONIBLE EN TU CUENTA      *");

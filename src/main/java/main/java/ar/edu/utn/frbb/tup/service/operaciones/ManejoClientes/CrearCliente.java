@@ -4,8 +4,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitCliente;
-import main.java.ar.edu.utn.frbb.tup.service.control.CuentaService;
 
 public class CrearCliente {
 

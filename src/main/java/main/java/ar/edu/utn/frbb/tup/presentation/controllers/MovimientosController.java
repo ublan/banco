@@ -1,6 +1,6 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.controllers;
 
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitMovimientos;
+import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
 import main.java.ar.edu.utn.frbb.tup.service.operaciones.modulos.Deposito;
 import main.java.ar.edu.utn.frbb.tup.service.operaciones.modulos.Retiro;
 
@@ -35,7 +35,7 @@ public class MovimientosController {
         if (requestBody.containsKey("monto")) {
             double monto = requestBody.get("monto");
 
-            SummitMovimientos.registrarMovimientoRetiro(cbu, monto, "RETIRO");
+            MovimientosDao.registrarMovimientoRetiro(cbu, monto, "RETIRO");
             return ResponseEntity.ok("Retiro realizado correctamente.");
         } else {
             return ResponseEntity.badRequest().body("El parámetro 'monto' es requerido.");

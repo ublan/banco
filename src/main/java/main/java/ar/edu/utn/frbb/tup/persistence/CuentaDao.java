@@ -13,7 +13,7 @@ import main.java.ar.edu.utn.frbb.tup.model.*;
 
 @Repository
 
-public class SummitCuenta {
+public class CuentaDao {
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt"; //cambiar aca 
     private static final String NOMBRE_ARCHIVO1 = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt"; // cambiar
 

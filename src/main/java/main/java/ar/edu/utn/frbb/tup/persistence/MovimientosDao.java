@@ -4,7 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class SummitMovimientos {
+public class MovimientosDao {
     private static final String NOMBRE_ARCHIVO_CUENTAS = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Cuentas.txt";
     private static final String NOMBRE_ARCHIVO_MOVIMIENTOS = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Movimientos.txt";
 

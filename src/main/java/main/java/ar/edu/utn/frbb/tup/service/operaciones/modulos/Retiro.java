@@ -8,14 +8,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import main.java.ar.edu.utn.frbb.tup.persistence.SummitMovimientos;
+import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
 
 public class Retiro {
     private static final String TIPO_MOVIMIENTO = "RETIRO";
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\joaqu\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Cuentas.txt";
 
     public static void realizarRetiro(String cbu, double monto) {
-        String cbuValidado = SummitMovimientos.buscarCuentaPorCBU(cbu);
+        String cbuValidado = MovimientosDao.buscarCuentaPorCBU(cbu);
 
         if (cbuValidado == null) {
             System.out.println("El CBU ingresado no existe.");
@@ -23,7 +23,7 @@ public class Retiro {
         }
 
         // Registrar el movimiento de retiro
-        SummitMovimientos.registrarMovimientoRetiro(cbuValidado, monto, TIPO_MOVIMIENTO);
+        MovimientosDao.registrarMovimientoRetiro(cbuValidado, monto, TIPO_MOVIMIENTO);
 
 
         actualizarArchivoCuentas(cbuValidado, monto);
