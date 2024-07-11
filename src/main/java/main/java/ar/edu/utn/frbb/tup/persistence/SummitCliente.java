@@ -6,8 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import org.springframework.stereotype.Repository;
 import main.java.ar.edu.utn.frbb.tup.model.*;
@@ -23,7 +22,7 @@ public class SummitCliente {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO, true))) {
             // Si el archivo es nuevo, escribir la cabecera
             if (archivoNuevo) {
-                escritor.write("id,nombre,apellido,dni,fechaNacimiento,tipoPersona,banco,fechaAlta");
+                escritor.write("id,nombre,apellido,dni,direccion,fechaNacimiento,tipoPersona,banco,fechaAlta");
                 escritor.newLine();
             }
 
@@ -32,6 +31,7 @@ public class SummitCliente {
             escritor.write(cliente.getNombre() + ",");
             escritor.write(cliente.getApellido() + ",");
             escritor.write(cliente.getDni() + ","); // Escribir el DNI como cadena
+            escritor.write(cliente.getDireccion() + ",");
             escritor.write(cliente.getFechaNacimiento().toString() + ",");
             escritor.write(cliente.getTipoPersona() + ",");
             escritor.write(cliente.getBanco() + ",");
@@ -55,7 +55,7 @@ public class SummitCliente {
                 String[] datos = linea.split(",");
 
                 // Validar que la línea tiene la cantidad esperada de datos
-                if (datos.length < 8) {
+                if (datos.length < 9) {
                     System.err.println("Línea mal formada: " + linea);
                     continue;
                 }
@@ -65,10 +65,11 @@ public class SummitCliente {
                     cliente.setDni((datos[3])); // Convertir DNI a Long
                     cliente.setNombre(datos[1]);
                     cliente.setApellido(datos[2]);
-                    cliente.setFechaNacimiento(LocalDate.parse(datos[4]));
-                    cliente.setTipoPersona(TipoPersona.fromString(datos[5]));
-                    cliente.setBanco(datos[6]);
-                    cliente.setFechaAlta(LocalDate.parse(datos[7])); // Parsear la fecha de alta correctamente
+                    cliente.setDireccion(datos[4]);
+                    cliente.setFechaNacimiento(LocalDate.parse(datos[5]));
+                    cliente.setTipoPersona(TipoPersona.fromString(datos[6]));
+                    cliente.setBanco(datos[7]);
+                    cliente.setFechaAlta(LocalDate.parse(datos[8])); // Parsear la fecha de alta correctamente
                     return cliente;
                 }
             }

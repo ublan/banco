@@ -1,13 +1,12 @@
-package main.java.ar.edu.utn.frbb.tup.model;
-import java.time.LocalDate;
-import java.time.Period;
+package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
-public class Persona {
+public class PersonaDto {
+
     private String nombre;
     private String apellido;
     private String direccion;
-    private String dni;
-    private LocalDate fechaNacimiento;
+    private long dni;
+    private String fechaNacimiento;
 
     public String getNombre() {
         return nombre;
@@ -33,26 +32,19 @@ public class Persona {
         this.direccion = direccion;
     }
 
-    public String getDni() {
+    public long getDni() {
         return dni;
     }
 
-    public void setDni(String dni) {
+    public void setDni(long dni) {
         this.dni = dni;
     }
 
-    public LocalDate getFechaNacimiento() {
+    public String getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+    public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-
-    public int getEdad() {
-        LocalDate currentDate = LocalDate.now();
-        Period agePeriod = Period.between(fechaNacimiento, currentDate);
-        return agePeriod.getYears();
-    }
 }
-
