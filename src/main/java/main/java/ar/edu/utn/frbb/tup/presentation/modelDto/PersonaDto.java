@@ -4,13 +4,19 @@ import java.time.LocalDate;
 import java.time.Period;
 
 public class PersonaDto {
-
+    private String dni;
     private String nombre;
     private String apellido;
     private String direccion;
-    private long dni;
     private LocalDate fechaNacimiento;
 
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
     public String getNombre() {
         return nombre;
     }
@@ -35,14 +41,6 @@ public class PersonaDto {
         this.direccion = direccion;
     }
 
-    public long getDni() {
-        return dni;
-    }
-
-    public void setDni(long dni) {
-        this.dni = dni;
-    }
-
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
@@ -57,3 +55,4 @@ public class PersonaDto {
         return agePeriod.getYears();
     }
 }
+

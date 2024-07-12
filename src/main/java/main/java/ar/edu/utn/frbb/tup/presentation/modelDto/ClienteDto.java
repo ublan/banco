@@ -2,7 +2,7 @@ package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
 import main.java.ar.edu.utn.frbb.tup.model.TipoPersona;
 
-public class ClienteDto extends PersonaDto{
+public class ClienteDto extends PersonaDto {
     private String banco;
     private TipoPersona tipoPersona;
 
@@ -21,5 +21,6 @@ public class ClienteDto extends PersonaDto{
     public void setTipoPersona(TipoPersona tipoPersona) {
         this.tipoPersona = tipoPersona;
     }
-
 }
+
+

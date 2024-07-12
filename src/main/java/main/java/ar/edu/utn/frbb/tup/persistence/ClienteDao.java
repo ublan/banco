@@ -30,7 +30,7 @@ public class ClienteDao {
             escritor.write(cliente.getDni() + ",");
             escritor.write(cliente.getNombre() + ",");
             escritor.write(cliente.getApellido() + ",");
-            escritor.write(cliente.getDni() + ","); // Escribir el DNI como cadena
+            escritor.write(cliente.getDni() + ","); 
             escritor.write(cliente.getDireccion() + ",");
             escritor.write(cliente.getFechaNacimiento().toString() + ",");
             escritor.write(cliente.getTipoPersona() + ",");
@@ -62,7 +62,7 @@ public class ClienteDao {
 
                 if (datos[3].equals(dni)) { // Comparar el DNI en el archivo con el DNI proporcionado
                     Cliente cliente = new Cliente();
-                    cliente.setDni((datos[3])); // Convertir DNI a Long
+                    cliente.setDni((datos[3])); 
                     cliente.setNombre(datos[1]);
                     cliente.setApellido(datos[2]);
                     cliente.setDireccion(datos[4]);

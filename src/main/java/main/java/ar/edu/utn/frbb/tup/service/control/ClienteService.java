@@ -12,9 +12,6 @@ public class ClienteService {
 
     public void darDeAltaCliente(Cliente cliente) throws ClienteAlreadyExistsException {
         Cliente clienteExistente = ClienteDao.findByDni(String.valueOf(cliente.getDni()));
-        if (cliente.getFechaNacimiento() == null) {
-            throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
-        }
         if (clienteExistente != null) {
             throw new IllegalArgumentException("Ya existe un cliente con DNI " + cliente.getDni());
         }

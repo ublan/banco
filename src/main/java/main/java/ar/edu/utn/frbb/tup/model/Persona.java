@@ -1,13 +1,22 @@
 package main.java.ar.edu.utn.frbb.tup.model;
+
 import java.time.LocalDate;
 import java.time.Period;
 
 public class Persona {
+    private String dni;
     private String nombre;
     private String apellido;
     private String direccion;
-    private String dni;
     private LocalDate fechaNacimiento;
+
+    public Persona(String dni, String nombre, String apellido, String direccion, LocalDate fechaNacimiento) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.direccion = direccion;
+        this.fechaNacimiento = fechaNacimiento;
+    }
 
     public String getNombre() {
         return nombre;
@@ -55,4 +64,5 @@ public class Persona {
         return agePeriod.getYears();
     }
 }
+
 
