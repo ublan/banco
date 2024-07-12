@@ -1,8 +1,10 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
+import main.java.ar.edu.utn.frbb.tup.model.TipoPersona;
+
 public class ClienteDto extends PersonaDto{
     private String banco;
-    private String tipoPersona;
+    private TipoPersona tipoPersona;
 
     public String getBanco() {
         return banco;
@@ -12,11 +14,12 @@ public class ClienteDto extends PersonaDto{
         this.banco = banco;
     }
 
-    public String getTipoPersona() {
+    public TipoPersona getTipoPersona() {
         return tipoPersona;
     }
 
-    public void setTipoPersona(String tipoPersona) {
+    public void setTipoPersona(TipoPersona tipoPersona) {
         this.tipoPersona = tipoPersona;
     }
+
 }

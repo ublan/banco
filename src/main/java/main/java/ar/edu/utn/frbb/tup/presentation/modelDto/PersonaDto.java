@@ -1,12 +1,15 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class PersonaDto {
 
     private String nombre;
     private String apellido;
     private String direccion;
     private long dni;
-    private String fechaNacimiento;
+    private LocalDate fechaNacimiento;
 
     public String getNombre() {
         return nombre;
@@ -40,11 +43,17 @@ public class PersonaDto {
         this.dni = dni;
     }
 
-    public String getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public int getEdad() {
+        LocalDate currentDate = LocalDate.now();
+        Period agePeriod = Period.between(fechaNacimiento, currentDate);
+        return agePeriod.getYears();
     }
 }
