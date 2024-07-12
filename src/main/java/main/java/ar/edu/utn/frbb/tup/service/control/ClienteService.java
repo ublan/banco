@@ -36,7 +36,7 @@ public class ClienteService {
         ClienteDao.escribirEnArchivo(cliente);
     }
 
-    public void ValidardarDeAltaCliente(Cliente cliente) throws ModificarClienteException { //Excepcion para modificar un cliente existente
+    public void ValidardarDeAltaCliente(Cliente cliente) throws ModificarClienteException { //Esto mover a modifcar cliente
 
         if (cliente.getFechaNacimiento() == null) {
             throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");

@@ -1,9 +1,12 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
+import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
+import main.java.ar.edu.utn.frbb.tup.model.TipoCuenta;
+
 public class CuentaDto {
     private String nombre;
     private long dniTitular;
-    private String tipoCuenta;
+    TipoCuenta tipoCuenta;
     private String tipoMoneda;
 
 
@@ -23,19 +26,21 @@ public class CuentaDto {
         this.dniTitular = dniTitular;
     }
 
-    public String getTipoCuenta() {
+    public TipoCuenta getTipoCuenta() {
         return tipoCuenta;
     }
 
-    public void setTipoCuenta(String tipoCuenta) {
+    public CuentaDto setTipoCuenta(TipoCuenta tipoCuenta) {
         this.tipoCuenta = tipoCuenta;
+        return this;
     }
 
-    public String getTipoMoneda() {
+    public String getMoneda() {
         return tipoMoneda;
     }
 
-    public void setTipoMoneda(String tipoMoneda) {
-        this.tipoMoneda = tipoMoneda;
+    public CuentaDto setMoneda(String moneda) {
+        this.tipoMoneda = moneda;
+        return this;
     }
 }
