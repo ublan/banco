@@ -20,6 +20,10 @@ public class Cliente extends Persona {
         this.fechaAlta = LocalDate.now(); // O puedes obtener esta fecha de clienteDto si está disponible
     }
 
+    public Cliente() {
+        super(null, null, null, null, null);
+    }
+
     // Getters y setters
 
     public TipoPersona getTipoPersona() {
