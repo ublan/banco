@@ -1,4 +1,5 @@
 package main.java.ar.edu.utn.frbb.tup.model;
+
 import main.java.ar.edu.utn.frbb.tup.exception.CantidadNegativaException;
 import main.java.ar.edu.utn.frbb.tup.exception.NoAlcanzaException;
 
@@ -7,13 +8,15 @@ import java.util.Random;
 
 public class Cuenta {
     private long numeroCuenta;
-    String nombre;
-    LocalDateTime fechaCreacion;
-    int balance;
-    TipoCuenta tipoCuenta;
-    Cliente titular;
-    private String CBU; // Agregar CBU a la cuenta
-    String moneda;
+    private String nombre;
+    private LocalDateTime fechaCreacion;
+    private int balance;
+    private TipoCuenta tipoCuenta;
+    private Cliente titular;
+    private long CBU; // Agregar CBU a la cuenta
+    private String moneda;
+
+    // Getters y setters
 
     public Cliente getTitular() {
         return titular;
@@ -22,7 +25,6 @@ public class Cuenta {
     public void setTitular(Cliente titular) {
         this.titular = titular;
     }
-
 
     public TipoCuenta getTipoCuenta() {
         return tipoCuenta;
@@ -60,7 +62,7 @@ public class Cuenta {
         return this;
     }
 
-    public String getCBU() {
+    public long getCBU() {
         return CBU;
     }
 
@@ -68,9 +70,14 @@ public class Cuenta {
         this.CBU = generarCBU();
     }
 
-    private String generarCBU() {
+    private long generarCBU() {
         Random random = new Random();
-        return String.format("%08d", random.nextInt(100000000));
+        // Generar un número aleatorio de 20 dígitos como string
+        StringBuilder cbuBuilder = new StringBuilder();
+        for (int i = 0; i < 20; i++) {
+            cbuBuilder.append(random.nextInt(10)); // Agregar un dígito aleatorio (0-9)
+        }
+        return Long.parseLong(cbuBuilder.toString()); // Convertir el string a long
     }
 
     public void debitarDeCuenta(int cantidadADebitar) throws NoAlcanzaException, CantidadNegativaException {
@@ -91,7 +98,8 @@ public class Cuenta {
     public long getNumeroCuenta() {
         return numeroCuenta;
     }
-    public void setNumeroCuenta(Long numeroCuenta) {
+
+    public void setNumeroCuenta(long numeroCuenta) {
         this.numeroCuenta = numeroCuenta;
     }
 
@@ -104,3 +112,4 @@ public class Cuenta {
         return this;
     }
 }
+
