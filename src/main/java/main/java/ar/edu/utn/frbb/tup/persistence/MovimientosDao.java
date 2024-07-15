@@ -1,111 +1,39 @@
 package main.java.ar.edu.utn.frbb.tup.persistence;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import main.java.ar.edu.utn.frbb.tup.model.Movimiento;
+import org.springframework.stereotype.Repository;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+@Repository
 public class MovimientosDao {
-    private static final String NOMBRE_ARCHIVO_CUENTAS = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Cuentas.txt";
-    private static final String NOMBRE_ARCHIVO_MOVIMIENTOS = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Movimientos.txt";
 
-    public static void registrarMovimiento(String CBU, double monto, String tipoMovimiento) {
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO_MOVIMIENTOS, true))) {
-            escritor.write(CBU + "," + monto + "," + tipoMovimiento);
-            escritor.newLine();
-            System.out.println("Movimiento registrado en " + NOMBRE_ARCHIVO_MOVIMIENTOS + " correctamente.");
-        } catch (IOException ex) {
-            System.err.println("Error al escribir en el archivo de movimientos: " + ex.getMessage());
-        }
+    private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Movimientos.txt";
 
-        actualizarSaldo(CBU, monto);
-    }
+    public static void guardarEnArchivo(Movimiento movimiento) {
+        boolean archivoNuevo = !(new File(NOMBRE_ARCHIVO).exists());
 
-    public static void registrarMovimientoTransferencia(String CBU_INICIO, String CBU_FINAL, double monto,
-            String tipoMovimiento) {
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO_MOVIMIENTOS, true))) {
-            escritor.write(CBU_INICIO + "," + CBU_FINAL + "," + monto + "," + tipoMovimiento);
-            escritor.newLine();
-            System.out.println("Movimiento registrado en " + NOMBRE_ARCHIVO_MOVIMIENTOS + " correctamente.");
-        } catch (IOException ex) {
-            System.err.println("Error al escribir en el archivo de movimientos: " + ex.getMessage());
-        }
-
-        actualizarSaldo(CBU_INICIO, -monto); // Resta el monto al CBU_INICIO
-        actualizarSaldo(CBU_FINAL, monto); // Suma el monto al CBU_FINAL
-    }
-
-    public static void registrarMovimientoRetiro(String CBU, double monto, String tipoMovimiento) {
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO_MOVIMIENTOS, true))) {
-            escritor.write(CBU + "," + monto + "," + tipoMovimiento);
-            escritor.newLine();
-            System.out.println("Movimiento registrado en " + NOMBRE_ARCHIVO_MOVIMIENTOS + " correctamente.");
-        } catch (IOException ex) {
-            System.err.println("Error al escribir en el archivo de movimientos: " + ex.getMessage());
-        }
-
-        actualizarSaldo(CBU, -monto); // Resta el monto al saldo de la cuenta
-    }
-
-    public static String buscarCuentaPorCBU(String CBU) {
-        try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO_CUENTAS))) {
-            String linea;
-            while ((linea = lector.readLine()) != null) {
-                String[] campos = linea.split(",");
-                if (campos.length > 0) {
-                    String cbuCuenta = campos[0];
-                    if (cbuCuenta.equals(CBU)) {
-                        return linea;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace(); // Manejo adecuado de excepción
-        }
-        return null; // Si no se encuentra la cuenta
-    }
-
-    public static double obtenerSaldo(String CBU) {
-        try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO_CUENTAS))) {
-            String linea;
-            while ((linea = lector.readLine()) != null) {
-                String[] campos = linea.split(",");
-                if (campos.length > 3) {
-                    String cbuCuenta = campos[0];
-                    if (cbuCuenta.equals(CBU)) {
-                        return Double.parseDouble(campos[3]);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace(); // Manejo adecuado de excepción
-        }
-        return 0.0; // Si no se encuentra la cuenta
-    }
-
-    private static void actualizarSaldo(String CBU, double monto) {
-        // Método para actualizar el saldo en el archivo de cuentas
-        try {
-            BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO_CUENTAS));
-            BufferedWriter escritor = new BufferedWriter(new FileWriter("temp.txt"));
-
-            String linea;
-            while ((linea = lector.readLine()) != null) {
-                String[] campos = linea.split(",");
-                if (campos.length > 3 && campos[0].equals(CBU)) {
-                    double saldoActual = Double.parseDouble(campos[3]);
-                    campos[3] = String.valueOf(saldoActual + monto);
-                    linea = String.join(",", campos);
-                }
-                escritor.write(linea + "\n");
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO, true))) {
+            // Si el archivo es nuevo, escribir la cabecera
+            if (archivoNuevo) {
+                escritor.write("CBU,fechaOperacion,tipoOperacion,monto");
+                escritor.newLine();
             }
 
-            lector.close();
-            escritor.close();
+            // Escribir los datos del movimiento
+            escritor.write(movimiento.getCBU() + ",");
+            escritor.write(movimiento.getFechaOperacion().toString() + ",");
+            escritor.write(movimiento.getTipoOperacion().name() + ",");
+            escritor.write(Double.toString(movimiento.getMonto()));
+            escritor.newLine();
 
-            Files.move(Paths.get("temp.txt"), Paths.get(NOMBRE_ARCHIVO_CUENTAS),
-                    java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace(); // Manejo adecuado de excepción
+            System.out.println("Datos del movimiento guardados en " + NOMBRE_ARCHIVO + " correctamente.");
+        } catch (IOException ex) {
+            System.err.println("Error al escribir en el archivo: " + ex.getMessage());
         }
     }
 }
+
