@@ -13,7 +13,7 @@ public class Cuenta {
     private int balance;
     private TipoCuenta tipoCuenta;
     private Cliente titular;
-    private long CBU; // Agregar CBU a la cuenta
+    private long CBU; 
     private String moneda;
 
     // Getters y setters
@@ -72,9 +72,9 @@ public class Cuenta {
 
     private long generarCBU() {
         Random random = new Random();
-        // Generar un número aleatorio de 20 dígitos como string
+        // Generar un número aleatorio de 9 dígitos como string
         StringBuilder cbuBuilder = new StringBuilder();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 9; i++) {
             cbuBuilder.append(random.nextInt(10)); // Agregar un dígito aleatorio (0-9)
         }
         return Long.parseLong(cbuBuilder.toString()); // Convertir el string a long
