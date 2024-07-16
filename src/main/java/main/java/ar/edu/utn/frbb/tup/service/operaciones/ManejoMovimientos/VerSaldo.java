@@ -1,4 +1,4 @@
-package main.java.ar.edu.utn.frbb.tup.service.operaciones.modulos;
+package main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos;
 
 import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
 import main.java.ar.edu.utn.frbb.tup.model.Movimiento;
