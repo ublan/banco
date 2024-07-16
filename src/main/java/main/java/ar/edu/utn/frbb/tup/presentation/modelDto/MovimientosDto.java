@@ -1,8 +1,10 @@
-package main.java.ar.edu.utn.frbb.tup.model;
+package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
 import java.time.LocalDate;
 
-public class Movimiento {
+import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
+
+public class MovimientosDto {
     private Long CBU;
     private Long CBUDestino;
     private LocalDate fechaOperacion;

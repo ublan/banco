@@ -22,7 +22,6 @@ public class MostrarCliente {
         } catch (IOException e) {
             e.printStackTrace();
         }
-// codigo inecesario
         
     }
 }
