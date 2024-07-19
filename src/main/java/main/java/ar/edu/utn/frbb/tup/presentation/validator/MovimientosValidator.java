@@ -5,7 +5,7 @@ import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.MovimientosDto;
 
 public class MovimientosValidator {
-    public void validar(MovimientosDto movimientosDto) {
+    public void validarMovimientos(MovimientosDto movimientosDto) {
 
         if (Objects.isNull(movimientosDto.getCBU())) {
             throw new IllegalArgumentException("El CBU no puede ser nulo");

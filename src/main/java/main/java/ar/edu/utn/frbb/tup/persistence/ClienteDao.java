@@ -1,75 +1,56 @@
 package main.java.ar.edu.utn.frbb.tup.persistence;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.time.LocalDate;
 
-
+import main.java.ar.edu.utn.frbb.tup.model.Cliente;
+import main.java.ar.edu.utn.frbb.tup.model.TipoPersona;
 import org.springframework.stereotype.Repository;
-import main.java.ar.edu.utn.frbb.tup.model.*;
 
 @Repository
 public class ClienteDao {
 
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
 
-    public static void escribirEnArchivo(Cliente cliente) {
+    public void escribirEnArchivo(Cliente cliente) {
         boolean archivoNuevo = !(new File(NOMBRE_ARCHIVO).exists());
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO, true))) {
-            // Si el archivo es nuevo, escribir la cabecera
             if (archivoNuevo) {
                 escritor.write("id,nombre,apellido,dni,direccion,fechaNacimiento,tipoPersona,banco,fechaAlta");
                 escritor.newLine();
             }
-
-            // Escribir los datos del cliente
             escritor.write(cliente.getDni() + ",");
             escritor.write(cliente.getNombre() + ",");
             escritor.write(cliente.getApellido() + ",");
-            escritor.write(cliente.getDni() + ","); 
+            escritor.write(cliente.getDni() + ",");
             escritor.write(cliente.getDireccion() + ",");
             escritor.write(cliente.getFechaNacimiento().toString() + ",");
-            escritor.write(cliente.getTipoPersona() + ",");
+            escritor.write(cliente.getTipoPersona().toString() + ",");
             escritor.write(cliente.getBanco() + ",");
-            escritor.write(cliente.getFechaAlta().toString()); // Escribir la fecha de alta sin punto al final
+            escritor.write(cliente.getFechaAlta().toString());
             escritor.newLine();
-
-            System.out.println("Datos del cliente guardados en " + NOMBRE_ARCHIVO + " correctamente.");
         } catch (IOException ex) {
             System.err.println("Error al escribir en el archivo: " + ex.getMessage());
         }
     }
 
-    public static Cliente findByDni(String dni) {
+    public Cliente findByDni(String dni) {
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
             String linea;
-            // Leer la cabecera
             lector.readLine();
-
-            // Leer cada línea del archivo
             while ((linea = lector.readLine()) != null) {
                 String[] datos = linea.split(",");
-
-                // Validar que la línea tiene la cantidad esperada de datos
-                if (datos.length < 9) {
-                    System.err.println("Línea mal formada: " + linea);
-                    continue;
-                }
-
-                if (datos[3].equals(dni)) { // Comparar el DNI en el archivo con el DNI proporcionado
+                if (datos[3].equals(dni)) {
                     Cliente cliente = new Cliente();
-                    cliente.setDni((datos[3])); 
+                    cliente.setDni(datos[3]);
                     cliente.setNombre(datos[1]);
                     cliente.setApellido(datos[2]);
                     cliente.setDireccion(datos[4]);
                     cliente.setFechaNacimiento(LocalDate.parse(datos[5]));
                     cliente.setTipoPersona(TipoPersona.fromString(datos[6]));
                     cliente.setBanco(datos[7]);
-                    cliente.setFechaAlta(LocalDate.parse(datos[8])); // Parsear la fecha de alta correctamente
+                    cliente.setFechaAlta(LocalDate.parse(datos[8]));
                     return cliente;
                 }
             }

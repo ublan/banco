@@ -67,6 +67,22 @@ public class Cliente extends Persona {
         }
         return false;
     }
+
+    // Método para convertir Cliente en ClienteDto
+    public ClienteDto toDto() {
+        ClienteDto dto = new ClienteDto();
+        dto.setDni(this.getDni());
+        dto.setNombre(this.getNombre());
+        dto.setApellido(this.getApellido());
+        dto.setDireccion(this.getDireccion());
+        dto.setFechaNacimiento(this.getFechaNacimiento());
+        dto.setTipoPersona(this.tipoPersona);
+        dto.setBanco(this.banco);
+        return dto;
+    }
+
+
 }
+
 
 

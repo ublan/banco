@@ -1,61 +1,63 @@
 package main.java.ar.edu.utn.frbb.tup.service.control;
 
-import java.time.LocalDate;
+import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
+import main.java.ar.edu.utn.frbb.tup.exception.ModificarClienteException;
+import main.java.ar.edu.utn.frbb.tup.model.Cliente;
+import main.java.ar.edu.utn.frbb.tup.presentation.validator.ClienteValidator;
+import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoClientes.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import main.java.ar.edu.utn.frbb.tup.model.*;
-import main.java.ar.edu.utn.frbb.tup.persistence.*;
-import main.java.ar.edu.utn.frbb.tup.exception.*;
+import java.util.List;
 
+@Service
 public class ClienteService {
 
+    @Autowired
+    private ClienteValidator clienteValidator;
 
+    @Autowired
+    private CrearCliente crearCliente;
+
+    @Autowired
+    private BorrarCliente borrarCliente;
+
+    @Autowired
+    private ModificarCliente modificarCliente;
+
+    @Autowired
+    private MostrarCliente mostrarCliente;
+
+    @Autowired
+    private MostrarTodosClientes mostrarTodosClientes;
 
     public void darDeAltaCliente(Cliente cliente) throws ClienteAlreadyExistsException {
-        Cliente clienteExistente = ClienteDao.findByDni(String.valueOf(cliente.getDni()));
-        if (clienteExistente != null) {
-            throw new IllegalArgumentException("Ya existe un cliente con DNI " + cliente.getDni());
-        }
-
-        if (cliente.getEdad() < 18) {
-            throw new IllegalArgumentException("El cliente debe ser mayor a 18 años");
-        }
-
-        if (cliente.getNombre().isEmpty() || cliente.getApellido().isEmpty()) {
-            throw new IllegalArgumentException("El nombre y apellido del cliente son obligatorios");
-        }
-
-        // Verificar que la fecha de nacimiento no sea en el futuro
-        if (cliente.getFechaNacimiento().isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha de nacimiento no puede ser en el futuro");
-        }
-
-        // Guardar cliente en la "base de datos" (archivo)
-        ClienteDao.escribirEnArchivo(cliente);
+        clienteValidator.validarCliente(cliente.toDto());
+        crearCliente.validarClienteIfExist(cliente.toDto());
+        crearCliente.crearCliente(cliente);
     }
 
-    public void ValidardarDeAltaCliente(Cliente cliente) throws ModificarClienteException { //Esto mover a modifcar cliente
+    public void borrarCliente(String dni) {
+        borrarCliente.borrarCliente(dni);
+    }
 
-        if (cliente.getFechaNacimiento() == null) {
-            throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
-        }
-
-        if (cliente.getEdad() < 18) {
-            throw new IllegalArgumentException("El cliente debe ser mayor a 18 años");
-        }
-
-        if (cliente.getDni() == null) {
-            throw new IllegalArgumentException("No puede tener dni nulo"); // Asegurarse de que el DNI no sea nulo
-        }
-
-        if (cliente.getNombre().isEmpty() || cliente.getApellido().isEmpty()) {
-            throw new IllegalArgumentException("El nombre y apellido del cliente son obligatorios");
-        }
-
-        // Verificar que la fecha de nacimiento no sea en el futuro
-        if (cliente.getFechaNacimiento().isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha de nacimiento no puede ser en el futuro");
+    public void modificarCliente(Cliente cliente) {
+        clienteValidator.validarCliente(cliente.toDto());
+        try {
+            modificarCliente.modificarCliente(cliente);
+        } catch (Exception e) {
+            throw new ModificarClienteException("Error al modificar el cliente: " + cliente.getDni(), e);
         }
     }
 
+    public Cliente mostrarCliente(String dni) {
+        return mostrarCliente.mostrarCliente(dni);
+    }
+
+    public List<Cliente> obtenerTodosLosClientes() {
+        return mostrarTodosClientes.obtenerTodosLosClientes();
+    }
 }
+
+
 

@@ -1,17 +1,19 @@
 package main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoClientes;
 
+import main.java.ar.edu.utn.frbb.tup.model.Cliente;
+import org.springframework.stereotype.Service;
+
 import java.io.*;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ModificarCliente {
 
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
 
-    public static void modificarCliente(String dni, String nombre, String apellido, String nuevoDni,
-            LocalDate fechaNacimiento, String tipoPersona, String banco, LocalDate fechaAlta) {
+    public void modificarCliente(Cliente cliente) {
         List<String> nuevosDatos = new ArrayList<>();
         boolean clienteEncontrado = false;
 
@@ -19,16 +21,16 @@ public class ModificarCliente {
             String linea;
             while ((linea = lector.readLine()) != null) {
                 String[] campos = linea.split(",");
-                if (campos.length > 1 && campos[3].trim().equals(dni.trim())) {
+                if (campos[3].trim().equals(cliente.getDni().trim())) {
                     clienteEncontrado = true;
-                    // Actualizar los campos según los parámetros recibidos
-                    campos[1] = nombre;
-                    campos[2] = apellido;
-                    campos[3] = nuevoDni;
-                    campos[4] = fechaNacimiento.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    campos[5] = tipoPersona;
-                    campos[6] = banco;
-                    campos[7] = fechaAlta.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    campos[1] = cliente.getNombre();
+                    campos[2] = cliente.getApellido();
+                    campos[3] = cliente.getDni();
+                    campos[4] = cliente.getDireccion();
+                    campos[5] = cliente.getFechaNacimiento().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    campos[6] = cliente.getTipoPersona().toString();
+                    campos[7] = cliente.getBanco();
+                    campos[8] = cliente.getFechaAlta().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                 }
                 nuevosDatos.add(String.join(",", campos));
             }
@@ -45,9 +47,6 @@ public class ModificarCliente {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("Cliente modificado con éxito.");
-        } else {
-            System.out.println("No se encontraron clientes con el DNI: " + dni);
         }
     }
 }

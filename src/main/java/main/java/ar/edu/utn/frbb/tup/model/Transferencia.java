@@ -1,6 +1,7 @@
 package main.java.ar.edu.utn.frbb.tup.model;
 
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
+
 public class Transferencia {
 
     private long cuentaOrigen;
@@ -14,6 +15,8 @@ public class Transferencia {
         this.monto = transferenciaDto.getMonto();
         this.moneda = TipoMoneda.fromString(transferenciaDto.getMoneda());
     }
+
+    // getters y setters
 
     public long getCuentaOrigen() {
         return cuentaOrigen;
@@ -47,3 +50,4 @@ public class Transferencia {
         this.moneda = moneda;
     }
 }
+

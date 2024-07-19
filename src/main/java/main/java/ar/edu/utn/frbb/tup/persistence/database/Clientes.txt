@@ -1,3 +1,4 @@
 id,nombre,apellido,dni,direccion,fechaNacimiento,tipoPersona,banco,fechaAlta
-114145678,matias,napoli,114145678,1990-05-15,PERSONA_FISICA,Banco Ejemplo,2021-05-15
-12345679,Matias Uriel,Blanco,43464667,2001-05-15,PERSONA_FISICA,Banco Nacion,2022-05-10
+114145678,matias,napoli,114145678,Uruguay 33,1990-05-15,PERSONA_FISICA,Banco Ejemplo,2021-05-15
+12345679,Matias Uriel,Blanco,43464667,Estomba 123,2001-05-15,PERSONA_JURIDICA,Banco Nacion,2022-05-10
+12345678,Juan,Pérez,12345678,Av. Siempre Viva 742,1990-05-15,PERSONA_FISICA,Banco de Ejemplo,2022-05-10

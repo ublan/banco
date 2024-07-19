@@ -5,25 +5,19 @@ public enum TipoMoneda {
     DOLARES("USD");
 
     private final String descripcion;
+    public static final String ARS = "ARS";
+    public static final String USD = "USD";
 
     TipoMoneda(String descripcion) {
         this.descripcion = descripcion;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
     public static TipoMoneda fromString(String text) throws IllegalArgumentException {
-        // Convertir el texto a minúsculas para evitar problemas de mayúsculas/minúsculas
-        String lowerCaseText = text.toLowerCase();
-        
         for (TipoMoneda tipo : TipoMoneda.values()) {
-            if (tipo.descripcion.equalsIgnoreCase(lowerCaseText)) {
+            if (tipo.descripcion.equalsIgnoreCase(text)) {
                 return tipo;
             }
         }
-        
         throw new IllegalArgumentException("No se pudo encontrar un TipoMoneda con la descripción: " + text);
     }
 }

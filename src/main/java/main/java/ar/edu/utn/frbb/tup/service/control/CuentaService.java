@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 public class CuentaService {
 
     public void darDeAltaCuenta(Cuenta cuenta, String dni) throws ClienteAlreadyExistsException {
-        Cliente clienteExistente = ClienteDao.findByDni(dni);
+        ClienteDao clienteDao = new ClienteDao();
+        Cliente clienteExistente = clienteDao.findByDni(dni);
         if (clienteExistente == null) {
             throw new IllegalArgumentException("El titular de la cuenta no existe");
         }
