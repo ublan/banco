@@ -13,35 +13,30 @@ import java.util.List;
 public class MovimientosDao {
 
     private static final String NOMBRE_ARCHIVO_MOVIMIENTOS = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Movimientos.txt";
-    private static final String NOMBRE_ARCHIVO_TRANSFERENCIAS = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Transferencias.txt";
 
     public void guardarMovimiento(Movimiento movimiento) {
-        String rutaArchivo = movimiento.getTipoOperacion() == TipoOperacion.TRANSFERENCIA ? NOMBRE_ARCHIVO_TRANSFERENCIAS : NOMBRE_ARCHIVO_MOVIMIENTOS;
-        boolean archivoNuevo = !(new File(rutaArchivo).exists());
+        boolean archivoNuevo = !(new File(NOMBRE_ARCHIVO_MOVIMIENTOS).exists());
 
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(rutaArchivo, true))) {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO_MOVIMIENTOS, true))) {
             if (archivoNuevo) {
-                escritor.write("CBU,CBUDestino,fechaOperacion,tipoOperacion,monto");
+                escritor.write("CBU,fechaOperacion,tipoOperacion,monto");
                 escritor.newLine();
             }
 
             escritor.write(movimiento.getCBU() + ",");
-            escritor.write(movimiento.getCBUDestino() + ",");
             escritor.write(movimiento.getFechaOperacion().toString() + ",");
             escritor.write(movimiento.getTipoOperacion().name() + ",");
             escritor.write(Double.toString(movimiento.getMonto()));
             escritor.newLine();
 
-            System.out.println("Datos del movimiento guardados en " + rutaArchivo + " correctamente.");
+            System.out.println("Datos del movimiento guardados correctamente.");
         } catch (IOException ex) {
             System.err.println("Error al escribir en el archivo: " + ex.getMessage());
         }
     }
 
     public Movimiento cuentaPorCBU(long cbu) {
-        List<Movimiento> movimientos = new ArrayList<>();
-        movimientos.addAll(leerMovimientosDeArchivo(NOMBRE_ARCHIVO_MOVIMIENTOS, cbu));
-        movimientos.addAll(leerMovimientosDeArchivo(NOMBRE_ARCHIVO_TRANSFERENCIAS, cbu));
+        List<Movimiento> movimientos = leerMovimientosDeArchivo(NOMBRE_ARCHIVO_MOVIMIENTOS);
 
         for (Movimiento movimiento : movimientos) {
             if (movimiento.getCBU() == cbu) {
@@ -52,39 +47,44 @@ public class MovimientosDao {
     }
 
     public List<Movimiento> obtenerOperacionesPorCBU(long cbu) {
-        List<Movimiento> movimientos = new ArrayList<>();
-        movimientos.addAll(leerMovimientosDeArchivo(NOMBRE_ARCHIVO_MOVIMIENTOS, cbu));
-        movimientos.addAll(leerMovimientosDeArchivo(NOMBRE_ARCHIVO_TRANSFERENCIAS, cbu));
-        return movimientos;
+        List<Movimiento> movimientos = leerMovimientosDeArchivo(NOMBRE_ARCHIVO_MOVIMIENTOS);
+        List<Movimiento> resultado = new ArrayList<>();
+
+        for (Movimiento movimiento : movimientos) {
+            if (movimiento.getCBU() == cbu) {
+                resultado.add(movimiento);
+            }
+        }
+        return resultado;
     }
 
-    private List<Movimiento> leerMovimientosDeArchivo(String rutaArchivo, long cbu) {
+    private List<Movimiento> leerMovimientosDeArchivo(String rutaArchivo) {
         List<Movimiento> movimientos = new ArrayList<>();
 
         try (BufferedReader lector = new BufferedReader(new FileReader(rutaArchivo))) {
             String linea;
-            lector.readLine();
+            lector.readLine(); // Leer y descartar la línea de encabezado
 
             while ((linea = lector.readLine()) != null) {
                 String[] datos = linea.split(",");
 
-                if (datos.length < 5) {
+                if (datos.length < 4) {
                     System.err.println("Línea mal formada: " + linea);
                     continue;
                 }
 
-                long cbuOrigen = Long.parseLong(datos[0]);
-                long cbuDestino = Long.parseLong(datos[1]);
+                long cbu = Long.parseLong(datos[0]);
+                LocalDate fechaOperacion = LocalDate.parse(datos[1]);
+                TipoOperacion tipoOperacion = TipoOperacion.valueOf(datos[2]);
+                double monto = Double.parseDouble(datos[3]);
 
-                if (cbuOrigen == cbu || cbuDestino == cbu) {
-                    Movimiento movimiento = new Movimiento();
-                    movimiento.setCBU(cbuOrigen);
-                    movimiento.setCBUDestino(cbuDestino);
-                    movimiento.setFechaOperacion(LocalDate.parse(datos[2]));
-                    movimiento.setTipoOperacion(TipoOperacion.fromString(datos[3]));
-                    movimiento.setMonto(Double.parseDouble(datos[4]));
-                    movimientos.add(movimiento);
-                }
+                Movimiento movimiento = new Movimiento();
+                movimiento.setCBU(cbu);
+                movimiento.setFechaOperacion(fechaOperacion);
+                movimiento.setTipoOperacion(tipoOperacion);
+                movimiento.setMonto(monto);
+
+                movimientos.add(movimiento);
             }
         } catch (IOException ex) {
             System.err.println("Error al leer el archivo: " + ex.getMessage());
@@ -92,6 +92,7 @@ public class MovimientosDao {
         return movimientos;
     }
 }
+
 
 
 

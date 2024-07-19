@@ -1,8 +1,11 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.validator;
 
+import org.springframework.stereotype.Component;
+
 import main.java.ar.edu.utn.frbb.tup.model.TipoCuenta;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.CuentaDto;
 
+@Component
 public class CuentaValidator {
 
     public void validarCuenta(CuentaDto cuentadto) {

@@ -1,13 +1,19 @@
 package main.java.ar.edu.utn.frbb.tup.service.control;
 
+import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.MovimientosDto;
 import main.java.ar.edu.utn.frbb.tup.model.Movimiento;
-import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
 import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
+import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos.Deposito;
+import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos.Retiro;
+import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos.Transferencia;
+import main.java.ar.edu.utn.frbb.tup.presentation.validator.MovimientosValidator;
+import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
+
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class MovimientoService {
@@ -15,35 +21,47 @@ public class MovimientoService {
     @Autowired
     private MovimientosDao movimientosDao;
 
-    public void realizarDeposito(long cbu, double monto) {
-        Movimiento movimiento = new Movimiento();
-        movimiento.setCBU(cbu);
-        movimiento.setFechaOperacion(LocalDate.now());
-        movimiento.setTipoOperacion(TipoOperacion.DEPOSITO);
-        movimiento.setMonto(monto);
+    @Autowired
+    private MovimientosValidator movimientosValidator;
 
-        movimientosDao.guardarMovimiento(movimiento);
+    @Autowired
+    private Deposito deposito;
+
+    @Autowired
+    private Retiro retiro;
+
+    @Autowired
+    private Transferencia transferencia;
+
+    public void realizarDeposito(long cbu, double monto, String moneda) {
+        MovimientosDto movimientosDto = new MovimientosDto();
+        movimientosDto.setCBU(cbu);
+        movimientosDto.setMonto(monto);
+        movimientosDto.setTipoOperacion(TipoOperacion.DEPOSITO);
+
+        movimientosValidator.validarDeposito(movimientosDto);
+        deposito.realizarDeposito(cbu, monto, moneda);
     }
 
-    public void realizarRetiro(long cbu, double monto) {
-        Movimiento movimiento = new Movimiento();
-        movimiento.setCBU(cbu);
-        movimiento.setFechaOperacion(LocalDate.now());
-        movimiento.setTipoOperacion(TipoOperacion.RETIRO);
-        movimiento.setMonto(monto);
+    public void realizarRetiro(long cbu, double monto, String moneda) {
+        MovimientosDto movimientosDto = new MovimientosDto();
+        movimientosDto.setCBU(cbu);
+        movimientosDto.setMonto(monto);
+        movimientosDto.setTipoOperacion(TipoOperacion.RETIRO);
 
-        movimientosDao.guardarMovimiento(movimiento);
+        movimientosValidator.validarRetiro(movimientosDto);
+        retiro.realizarRetiro(cbu, monto, moneda);
     }
 
-    public void realizarTransferencia(long cuentaOrigen, long cuentaDestino, double monto) {
-        Movimiento movimiento = new Movimiento();
-        movimiento.setCBU(cuentaOrigen);
-        movimiento.setCBUDestino(cuentaDestino);
-        movimiento.setFechaOperacion(LocalDate.now());
-        movimiento.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
-        movimiento.setMonto(monto);
+    public void realizarTransferencia(long cuentaOrigen, long cuentaDestino, double monto, String moneda) {
+        MovimientosDto movimientosDto = new MovimientosDto();
+        movimientosDto.setCBU(cuentaOrigen);
+        movimientosDto.setCBUDestino(cuentaDestino);
+        movimientosDto.setMonto(monto);
+        movimientosDto.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
 
-        movimientosDao.guardarMovimiento(movimiento);
+        movimientosValidator.validarTransferencia(movimientosDto);
+        transferencia.realizarTransferencia(cuentaOrigen, cuentaDestino, monto, moneda);
     }
 
     public List<Movimiento> obtenerOperacionesPorCBU(long cbu) {

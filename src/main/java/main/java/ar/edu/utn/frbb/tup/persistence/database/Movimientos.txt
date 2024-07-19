@@ -1,3 +1,4 @@
-CBUOrigen,CBUDestino,fechaOperacion,tipoOperacion,monto
+CBU,fechaOperacion,tipoOperacion,monto
 123456785,2024-07-11,DEPOSITO,1500.00
 123456784,2024-07-12,RETIRO,500.00
+123456,2024-07-19,RETIRO,1500.5

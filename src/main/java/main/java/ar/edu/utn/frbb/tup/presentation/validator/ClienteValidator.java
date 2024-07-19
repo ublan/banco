@@ -2,9 +2,11 @@ package main.java.ar.edu.utn.frbb.tup.presentation.validator;
 
 import java.time.LocalDate;
 
+import org.springframework.stereotype.Component;
 import main.java.ar.edu.utn.frbb.tup.model.TipoPersona;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
 
+@Component
 public class ClienteValidator {
 
         public void validarCliente(ClienteDto clientedto) {

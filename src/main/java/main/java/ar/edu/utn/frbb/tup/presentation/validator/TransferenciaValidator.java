@@ -1,8 +1,11 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.validator;
 
+import org.springframework.stereotype.Component;
+
 import main.java.ar.edu.utn.frbb.tup.model.TipoMoneda;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
 
+@Component
 public class TransferenciaValidator {
 
     public void validarTransferencia(TransferenciaDto transferenciaDto) {
