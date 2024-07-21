@@ -48,7 +48,7 @@ public class CuentaService {
         }
 
         // Asignar CBU y fecha de creación
-        cuenta.setCBU();
+        
         cuenta.setFechaCreacion(LocalDateTime.now());
 
         // Guardar cuenta en la "base de datos" (archivo)

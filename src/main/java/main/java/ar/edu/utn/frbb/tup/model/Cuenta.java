@@ -16,6 +16,10 @@ public class Cuenta {
     private long CBU; 
     private String moneda;
 
+    public Cuenta() {
+        this.CBU = generarCBU(); // Generar CBU al crear una nueva cuenta
+    }
+
     // Getters y setters
 
     public Cliente getTitular() {
@@ -66,8 +70,8 @@ public class Cuenta {
         return CBU;
     }
 
-    public void setCBU() {
-        this.CBU = generarCBU();
+    public void setCBU(long CBU) {
+        this.CBU = CBU; // No generar un nuevo CBU aquí
     }
 
     private long generarCBU() {
