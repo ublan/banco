@@ -1,60 +1,54 @@
 package main.java.ar.edu.utn.frbb.tup.service.control;
 
+import main.java.ar.edu.utn.frbb.tup.exception.ClienteNotFoundException;
 import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
-import main.java.ar.edu.utn.frbb.tup.persistence.CuentaDao;
-import main.java.ar.edu.utn.frbb.tup.persistence.ClienteDao;
-import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
-
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
-import main.java.ar.edu.utn.frbb.tup.model.TipoCuenta;
-import java.time.LocalDateTime;
+import main.java.ar.edu.utn.frbb.tup.presentation.validator.CuentaValidator;
+import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoCuentas.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CuentaService {
 
-    public void darDeAltaCuenta(Cuenta cuenta, String dni) throws ClienteAlreadyExistsException {
-        ClienteDao clienteDao = new ClienteDao();
-        Cliente clienteExistente = clienteDao.findByDni(dni);
+    @Autowired
+    private CuentaValidator cuentaValidator;
+
+    @Autowired
+    private CrearCuenta crearCuenta;
+
+    @Autowired
+    private MostrarCuentas mostrarCuentas;
+
+    @Autowired
+    private ClienteService clienteService;
+
+    public void darDeAltaCuenta(Cuenta cuenta, String dni) throws ClienteNotFoundException {
+        Cliente clienteExistente = clienteService.mostrarCliente(dni);
         if (clienteExistente == null) {
             throw new IllegalArgumentException("El titular de la cuenta no existe");
         }
         cuenta.setTitular(clienteExistente);
+        cuentaValidator.validarCuenta(cuenta.toDto());
+        crearCuenta.crearCuenta(cuenta);
+    }
 
-        // Validaciones de cuenta
+    public void borrarCuenta(String cbu) {
+        BorrarCuenta.borrarCuenta(cbu);
+    }
 
-        if (cuenta.getNombre() == null || cuenta.getNombre().isEmpty()) {
-            throw new IllegalArgumentException("El nombre de la cuenta es obligatorio");
-        }
+    public List<String> mostrarCuenta(String dni) {
+        return mostrarCuentas.mostrarCuentas(dni);
+    }
 
-        if (cuenta.getTipoCuenta() == null) {
-            throw new IllegalArgumentException("El tipo de cuenta es obligatorio");
-        }
-
-        if (!cuenta.getTipoCuenta().equals(TipoCuenta.CORRIENTE) && !cuenta.getTipoCuenta().equals(TipoCuenta.AHORRO)) {
-            throw new IllegalArgumentException("El tipo de cuenta debe ser CORRIENTE o AHORRO");
-        }
-
-        if (cuenta.getBalance() < 0) {
-            throw new IllegalArgumentException("El balance no puede ser negativo");
-        }
-
-        if (cuenta.getMoneda() == null || cuenta.getMoneda().isEmpty()) {
-            throw new IllegalArgumentException("La moneda de la cuenta es obligatoria");
-        }
-
-        if (!cuenta.getMoneda().equals("ARS") && !cuenta.getMoneda().equals("USD")) {
-            throw new IllegalArgumentException("La moneda " + cuenta.getMoneda() + " no es aceptada. Solo se aceptan ARS y USD.");
-        }
-
-        // Asignar CBU y fecha de creación
-        
-        cuenta.setFechaCreacion(LocalDateTime.now());
-
-        // Guardar cuenta en la "base de datos" (archivo)
-        CuentaDao.escribirEnArchivo(cuenta);
+    public List<String> obtenerTodasLasCuentas() {
+        return mostrarCuentas.mostrarTodasLasCuentas();
     }
 }
+
+
 
 
 

@@ -135,7 +135,7 @@ public class CuentaDao {
                 cuenta.setNombre(datos[1]);
                 cuenta.setTipoCuenta(TipoCuenta.valueOf(datos[2]));
                 cuenta.setBalance((int) Double.parseDouble(datos[3])); // Convertir de double a int
-                cuenta.setMoneda(datos[4]);
+                cuenta.setMoneda(TipoMoneda.valueOf(datos[4]));
                 cuenta.setFechaCreacion(LocalDateTime.parse(datos[5], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
                 // Suponiendo que el titular se ha cargado previamente y es parte de la cuenta
                 cuenta.setTitular(new Cliente()); // Ajustar según sea necesario

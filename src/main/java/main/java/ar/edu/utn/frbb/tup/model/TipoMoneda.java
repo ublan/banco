@@ -1,12 +1,11 @@
 package main.java.ar.edu.utn.frbb.tup.model;
 
 public enum TipoMoneda {
-    PESOS("ARS"),
-    DOLARES("USD");
+    ARS("ARS"),
+    USD("USD");
 
     private final String descripcion;
-    public static final String ARS = "ARS";
-    public static final String USD = "USD";
+
 
     TipoMoneda(String descripcion) {
         this.descripcion = descripcion;

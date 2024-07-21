@@ -1,15 +1,20 @@
 package main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoCuentas;
 
+import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
+import main.java.ar.edu.utn.frbb.tup.persistence.CuentaDao;
+import org.springframework.stereotype.Component;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class MostrarCuentas {
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Cuentas.txt";
 
-    public static List<String> mostrarCuentas(String dni) {
+    public List<String> mostrarCuentas(String dni) {
         List<String> cuentasEncontradas = new ArrayList<>();
 
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
@@ -27,7 +32,7 @@ public class MostrarCuentas {
         return cuentasEncontradas;
     }
 
-    public static List<String> mostrarTodasLasCuentas() {
+    public List<String> mostrarTodasLasCuentas() {
         List<String> cuentas = new ArrayList<>();
 
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
@@ -42,3 +47,4 @@ public class MostrarCuentas {
         return cuentas;
     }
 }
+

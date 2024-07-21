@@ -2,6 +2,7 @@ package main.java.ar.edu.utn.frbb.tup.model;
 
 import main.java.ar.edu.utn.frbb.tup.exception.CantidadNegativaException;
 import main.java.ar.edu.utn.frbb.tup.exception.NoAlcanzaException;
+import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.CuentaDto;
 
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -14,10 +15,10 @@ public class Cuenta {
     private TipoCuenta tipoCuenta;
     private Cliente titular;
     private long CBU; 
-    private String moneda;
+    private TipoMoneda moneda;
 
     public Cuenta() {
-        this.CBU = generarCBU(); // Generar CBU al crear una nueva cuenta
+        // Constructor vacío
     }
 
     // Getters y setters
@@ -71,17 +72,17 @@ public class Cuenta {
     }
 
     public void setCBU(long CBU) {
-        this.CBU = CBU; // No generar un nuevo CBU aquí
+        this.CBU = CBU;
     }
 
-    private long generarCBU() {
+    public void generarCBU() {
         Random random = new Random();
         // Generar un número aleatorio de 9 dígitos como string
         StringBuilder cbuBuilder = new StringBuilder();
         for (int i = 0; i < 9; i++) {
             cbuBuilder.append(random.nextInt(10)); // Agregar un dígito aleatorio (0-9)
         }
-        return Long.parseLong(cbuBuilder.toString()); // Convertir el string a long
+        this.CBU = Long.parseLong(cbuBuilder.toString()); // Convertir el string a long
     }
 
     public void debitarDeCuenta(int cantidadADebitar) throws NoAlcanzaException, CantidadNegativaException {
@@ -107,13 +108,22 @@ public class Cuenta {
         this.numeroCuenta = numeroCuenta;
     }
 
-    public String getMoneda() {
+    public TipoMoneda getMoneda() {
         return moneda;
     }
 
-    public Cuenta setMoneda(String moneda) {
+    public Cuenta setMoneda(TipoMoneda moneda) {
         this.moneda = moneda;
         return this;
+    }
+
+    public CuentaDto toDto() {
+        CuentaDto cuentaDto = new CuentaDto();
+        cuentaDto.setNombre(this.nombre);
+        cuentaDto.setBalance(0);
+        cuentaDto.setTipoCuenta(this.tipoCuenta);
+        cuentaDto.setTipoMoneda(this.moneda != null ? this.moneda.toString() : null);
+        return cuentaDto;
     }
 }
 
