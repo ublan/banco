@@ -24,8 +24,6 @@ public class Cliente extends Persona {
         super(null, null, null, null, null);
     }
 
-    // Getters y setters
-
     public TipoPersona getTipoPersona() {
         return tipoPersona;
     }

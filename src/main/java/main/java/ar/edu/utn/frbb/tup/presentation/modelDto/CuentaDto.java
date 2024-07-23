@@ -1,7 +1,7 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
 import main.java.ar.edu.utn.frbb.tup.model.TipoCuenta;
-import main.java.ar.edu.utn.frbb.tup.model.TipoMoneda;
+
 
 public class CuentaDto {
     private String nombre;

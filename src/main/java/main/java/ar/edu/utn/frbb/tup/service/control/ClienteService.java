@@ -1,6 +1,7 @@
 package main.java.ar.edu.utn.frbb.tup.service.control;
 
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
+import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
 import main.java.ar.edu.utn.frbb.tup.exception.ModificarClienteException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
 import main.java.ar.edu.utn.frbb.tup.presentation.validator.ClienteValidator;
@@ -36,12 +37,15 @@ public class ClienteService {
         crearCliente.validarClienteIfExist(cliente.toDto());
         crearCliente.crearCliente(cliente);
     }
+    
+    
+    
 
     public void borrarCliente(String dni) {
         borrarCliente.borrarCliente(dni);
     }
 
-    public void modificarCliente(Cliente cliente) {
+    public void modificarCliente(Cliente cliente) throws ClienteNoEncontradoException {
         clienteValidator.validarCliente(cliente.toDto());
         try {
             modificarCliente.modificarCliente(cliente);

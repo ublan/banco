@@ -17,7 +17,7 @@ public class ClienteDao {
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO, true))) {
             if (archivoNuevo) {
-                escritor.write("id,nombre,apellido,dni,direccion,fechaNacimiento,tipoPersona,banco,fechaAlta");
+                escritor.write("dni,nombre,apellido,direccion,fechaNacimiento,tipoPersona,banco,fechaAlta");
                 escritor.newLine();
             }
             escritor.write(cliente.getDni() + ",");
@@ -36,21 +36,23 @@ public class ClienteDao {
     }
 
     public Cliente findByDni(String dni) {
+        System.out.println("Buscando cliente por DNI: " + dni);
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
             String linea;
-            lector.readLine();
+            lector.readLine(); // Leer la línea de encabezado
             while ((linea = lector.readLine()) != null) {
                 String[] datos = linea.split(",");
-                if (datos[3].equals(dni)) {
+                if (datos.length > 0 && datos[0].equals(dni)) {
+                    System.out.println("Cliente encontrado: " + linea);
                     Cliente cliente = new Cliente();
-                    cliente.setDni(datos[3]);
+                    cliente.setDni(datos[0]);
                     cliente.setNombre(datos[1]);
                     cliente.setApellido(datos[2]);
-                    cliente.setDireccion(datos[4]);
-                    cliente.setFechaNacimiento(LocalDate.parse(datos[5]));
-                    cliente.setTipoPersona(TipoPersona.fromString(datos[6]));
-                    cliente.setBanco(datos[7]);
-                    cliente.setFechaAlta(LocalDate.parse(datos[8]));
+                    cliente.setDireccion(datos[3]);
+                    cliente.setFechaNacimiento(LocalDate.parse(datos[4]));
+                    cliente.setTipoPersona(TipoPersona.valueOf(datos[5]));
+                    cliente.setBanco(datos[6]);
+                    cliente.setFechaAlta(datos[7].equals("null") ? null : LocalDate.parse(datos[7]));
                     return cliente;
                 }
             }
@@ -59,5 +61,8 @@ public class ClienteDao {
         }
         return null;
     }
+    
+    
+    
 
 }
