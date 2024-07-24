@@ -37,26 +37,5 @@ public class MovimientosValidator {
         }
     }
 
-    public void validarTransferencia(MovimientosDto movimientosDto) {
-        if (Objects.isNull(movimientosDto.getCBU())) {
-            throw new IllegalArgumentException("El CBU no puede ser nulo");
-        }
-
-        if (Objects.isNull(movimientosDto.getCBUDestino())) {
-            throw new IllegalArgumentException("El CBU destino no puede ser nulo");
-        }
-
-        if (movimientosDto.getCBU() == movimientosDto.getCBUDestino()) {
-            throw new IllegalArgumentException("El CBU destino no puede ser el mismo que el CBU origen");
-        }
-
-        if (movimientosDto.getMonto() <= 0) {
-            throw new IllegalArgumentException("El monto no puede ser negativo");
-        }
-
-        if (movimientosDto.getTipoOperacion() == null || !movimientosDto.getTipoOperacion().equals(TipoOperacion.TRANSFERENCIA)) {
-            throw new IllegalArgumentException("El tipo de operación debe ser TRANSFERENCIA");
-        }
-    }
 }
 

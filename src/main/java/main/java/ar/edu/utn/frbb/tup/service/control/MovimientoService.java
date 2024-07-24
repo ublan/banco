@@ -5,7 +5,6 @@ import main.java.ar.edu.utn.frbb.tup.model.Movimiento;
 import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
 import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos.Deposito;
 import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos.Retiro;
-import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos.Transferencia;
 import main.java.ar.edu.utn.frbb.tup.presentation.validator.MovimientosValidator;
 import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
 
@@ -30,8 +29,6 @@ public class MovimientoService {
     @Autowired
     private Retiro retiro;
 
-    @Autowired
-    private Transferencia transferencia;
 
     public void realizarDeposito(long cbu, double monto, String moneda) {
         MovimientosDto movimientosDto = new MovimientosDto();
@@ -51,17 +48,6 @@ public class MovimientoService {
 
         movimientosValidator.validarRetiro(movimientosDto);
         retiro.realizarRetiro(cbu, monto, moneda);
-    }
-
-    public void realizarTransferencia(long cuentaOrigen, long cuentaDestino, double monto, String moneda) {
-        MovimientosDto movimientosDto = new MovimientosDto();
-        movimientosDto.setCBU(cuentaOrigen);
-        movimientosDto.setCBUDestino(cuentaDestino);
-        movimientosDto.setMonto(monto);
-        movimientosDto.setTipoOperacion(TipoOperacion.TRANSFERENCIA);
-
-        movimientosValidator.validarTransferencia(movimientosDto);
-        transferencia.realizarTransferencia(cuentaOrigen, cuentaDestino, monto, moneda);
     }
 
     public List<Movimiento> obtenerOperacionesPorCBU(long cbu) {

@@ -41,8 +41,6 @@ public class MovimientosController {
         }
     }
 
-
-    // Endpoint para obtener operaciones por CBU
     @GetMapping("/operaciones/{cbu}")
     public ResponseEntity<List<Movimiento>> obtenerOperacionesPorCBU(@PathVariable long cbu) {
         try {
