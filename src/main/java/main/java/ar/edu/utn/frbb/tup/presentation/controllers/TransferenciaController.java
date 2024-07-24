@@ -20,5 +20,16 @@ public class TransferenciaController {
         List<TransferenciaDto> transacciones = transferenciaService.obtenerTransferenciasPorCbu(cuentaId);
         return ResponseEntity.ok(transacciones);
     }
+
+    @PostMapping
+    public ResponseEntity<String> realizarTransferencia(@RequestBody TransferenciaDto transferenciaDto) {
+        try {
+            transferenciaService.ejecutarTransferencia(transferenciaDto);
+            return ResponseEntity.ok("Transferencia exitosa");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }
 

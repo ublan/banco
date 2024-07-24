@@ -15,7 +15,6 @@ public class MovimientosController {
     @Autowired
     private MovimientoService movimientoService;
 
-    // Endpoint para realizar un depósito
     @PostMapping("/deposito")
     public ResponseEntity<String> realizarDeposito(@RequestBody MovimientoRequest request) {
         try {
@@ -28,7 +27,6 @@ public class MovimientosController {
         }
     }
 
-    // Endpoint para realizar un retiro
     @PostMapping("/retiro")
     public ResponseEntity<String> realizarRetiro(@RequestBody MovimientoRequest request) {
         try {

@@ -2,6 +2,7 @@ package main.java.ar.edu.utn.frbb.tup.presentation.validator;
 
 import org.springframework.stereotype.Component;
 
+import main.java.ar.edu.utn.frbb.tup.model.TipoMoneda;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
 
 @Component
@@ -24,7 +25,7 @@ public class TransferenciaValidator {
             throw new IllegalArgumentException("La moneda no puede ser nula");
         }
 
-        if (!transferenciaDto.getMoneda().equals("USD") && !transferenciaDto.getMoneda().equals("ARS")) {
+        if (!transferenciaDto.getMoneda().equals(TipoMoneda.USD) && !transferenciaDto.getMoneda().equals(TipoMoneda.ARS)) {
             throw new IllegalArgumentException("La moneda no es válida");
         }
     }
