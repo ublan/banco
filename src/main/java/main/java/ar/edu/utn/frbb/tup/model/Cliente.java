@@ -14,8 +14,15 @@ public class Cliente extends Persona {
 
     // Constructor que acepta un ClienteDto
     public Cliente(ClienteDto clienteDto) {
-        super(clienteDto.getDni(), clienteDto.getNombre(), clienteDto.getApellido(), clienteDto.getDireccion(), clienteDto.getFechaNacimiento());
-        this.tipoPersona = clienteDto.getTipoPersona();
+
+        super(
+            clienteDto.getDni(),
+            clienteDto.getNombre(), 
+            clienteDto.getApellido(), 
+            clienteDto.getDireccion(), 
+            LocalDate.parse(clienteDto.getFechaNacimiento())
+        );
+        this.tipoPersona = TipoPersona.fromString(clienteDto.getTipoPersona()); 
         this.banco = clienteDto.getBanco();
         this.fechaAlta = LocalDate.now(); // O puedes obtener esta fecha de clienteDto si está disponible
     }
@@ -65,20 +72,6 @@ public class Cliente extends Persona {
         }
         return false;
     }
-
-    // Método para convertir Cliente en ClienteDto
-    public ClienteDto toDto() {
-        ClienteDto dto = new ClienteDto();
-        dto.setDni(this.getDni());
-        dto.setNombre(this.getNombre());
-        dto.setApellido(this.getApellido());
-        dto.setDireccion(this.getDireccion());
-        dto.setFechaNacimiento(this.getFechaNacimiento());
-        dto.setTipoPersona(this.tipoPersona);
-        dto.setBanco(this.banco);
-        return dto;
-    }
-
 
 }
 

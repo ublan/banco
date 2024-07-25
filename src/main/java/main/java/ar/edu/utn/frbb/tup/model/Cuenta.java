@@ -85,21 +85,6 @@ public class Cuenta {
         this.CBU = Long.parseLong(cbuBuilder.toString()); // Convertir el string a long
     }
 
-    public void debitarDeCuenta(int cantidadADebitar) throws NoAlcanzaException, CantidadNegativaException {
-        if (cantidadADebitar < 0) {
-            throw new CantidadNegativaException();
-        }
-
-        if (balance < cantidadADebitar) {
-            throw new NoAlcanzaException();
-        }
-        this.balance = this.balance - cantidadADebitar;
-    }
-
-    public void forzaDebitoDeCuenta(int i) {
-        this.balance = this.balance - i;
-    }
-
     public long getNumeroCuenta() {
         return numeroCuenta;
     }

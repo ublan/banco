@@ -8,6 +8,7 @@ import main.java.ar.edu.utn.frbb.tup.presentation.validator.ClienteValidator;
 import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoClientes.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
 
 import java.util.List;
 
@@ -32,31 +33,39 @@ public class ClienteService {
     @Autowired
     private MostrarTodosClientes mostrarTodosClientes;
 
-    public void darDeAltaCliente(Cliente cliente) throws ClienteAlreadyExistsException {
-        clienteValidator.validarCliente(cliente.toDto());
-        crearCliente.validarClienteIfExist(cliente.toDto());
+    public void darDeAltaCliente(ClienteDto clientedto) throws ClienteAlreadyExistsException {
+        Cliente cliente = new Cliente(clientedto);
+        crearCliente.validarClienteIfExist(cliente);
         crearCliente.crearCliente(cliente);
     }
     
     
-    public void borrarCliente(String dni) {
-        borrarCliente.borrarCliente(dni);
-    }
-
-    public void modificarCliente(Cliente cliente) throws ClienteNoEncontradoException {
-        clienteValidator.validarCliente(cliente.toDto());
-        try {
-            modificarCliente.modificarCliente(cliente);
-        } catch (Exception e) {
-            throw new ModificarClienteException("Error al modificar el cliente: " + cliente.getDni(), e);
+    public Cliente borrarCliente(String dni) throws ClienteNoEncontradoException {
+        Cliente cliente = borrarCliente.borrarCliente(dni);
+        if (cliente == null) {
+            throw new  ClienteNoEncontradoException("No se encontro el cliente con dni: " + dni);   
         }
+        return cliente;
     }
 
-    public Cliente mostrarCliente(String dni) {
-        return mostrarCliente.mostrarCliente(dni);
+    public void modificarCliente(ClienteDto clientedto) throws ClienteNoEncontradoException {
+        Cliente cliente = new Cliente(clientedto);
+        modificarCliente.modificarCliente(cliente);
+    }
+
+    public Cliente mostrarCliente(String dni) throws ClienteNoEncontradoException {
+        Cliente cliente = mostrarCliente.mostrarCliente(dni);
+        if (cliente == null) {
+            throw new ClienteNoEncontradoException("No se encontro el cliente con dni: " + dni);
+        }
+        return cliente;
     }
 
     public List<Cliente> obtenerTodosLosClientes() {
+        List<Cliente> todosLosClientes = mostrarTodosClientes.obtenerTodosLosClientes();
+        if (todosLosClientes.isEmpty()) {
+            throw new IllegalArgumentException("No se encontraron clientes");
+        }
         return mostrarTodosClientes.obtenerTodosLosClientes();
     }
 }

@@ -19,11 +19,11 @@ public class CrearCliente {
 
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
 
-    public void validarClienteIfExist(ClienteDto clienteDto) throws ClienteAlreadyExistsException {
-        Cliente clienteExistente = clienteDao.findByDni(clienteDto.getDni());
+    public void validarClienteIfExist(Cliente cliente) throws ClienteAlreadyExistsException {
+        Cliente clienteExistente = clienteDao.findByDni(cliente.getDni());
         if (clienteExistente != null) {
-            System.err.println("Cliente ya existe con DNI: " + clienteDto.getDni());
-            throw new ClienteAlreadyExistsException("Ya existe un cliente con DNI " + clienteDto.getDni());
+            System.err.println("Cliente ya existe con DNI: " + cliente.getDni());
+            throw new ClienteAlreadyExistsException("Ya existe un cliente con DNI " + cliente.getDni());
         }
     }
     
@@ -32,7 +32,6 @@ public class CrearCliente {
     
     public void crearCliente(Cliente cliente) {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO, true))) {
-            System.out.println("Escribiendo cliente en archivo: " + cliente);
             escritor.write(clienteToCsv(cliente));
             escritor.newLine();
         } catch (IOException e) {

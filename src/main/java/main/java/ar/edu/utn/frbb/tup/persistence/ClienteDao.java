@@ -63,6 +63,21 @@ public class ClienteDao {
     }
     
     
+    public Cliente parseDatosToObjet(String[] datos){
+        Cliente cliente = new Cliente();
+
+        cliente.setDni(datos[0]);
+        cliente.setNombre(datos[1]);
+        cliente.setApellido(datos[2]);
+        cliente.setDireccion(datos[3]);
+        cliente.setFechaNacimiento(LocalDate.parse(datos[4]));
+        cliente.setTipoPersona(TipoPersona.valueOf(datos[5]));
+        cliente.setBanco(datos[6]);
+        cliente.setFechaAlta(LocalDate.parse(datos[7]));
+
+        return cliente;
+    }
+    
     
 
 }

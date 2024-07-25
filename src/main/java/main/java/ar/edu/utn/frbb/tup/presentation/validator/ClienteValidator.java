@@ -31,14 +31,6 @@ public class ClienteValidator {
             throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
         }
 
-        if (clientedto.getEdad() < 18) {
-            throw new IllegalArgumentException("El cliente debe ser mayor a 18 años");
-        }
-
-        if (clientedto.getFechaNacimiento().isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("La fecha de nacimiento no puede ser en el futuro");
-        }
-
         if (clientedto.getTipoPersona() == null) {
             throw new IllegalArgumentException("El tipo de persona no puede ser nulo");
             
