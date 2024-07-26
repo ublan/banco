@@ -22,28 +22,21 @@ public class MostrarTodosClientes {
 
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
             String linea;
+            linea = lector.readLine();
             while ((linea = lector.readLine()) != null) {
-                // Ignorar la primera línea si es el encabezado
-                if (linea.startsWith("id,")) {
-                    continue;
-                }
                 
                 String[] datos = linea.split(",");
-                if (datos.length < 9) {
-                    System.err.println("Línea mal formada: " + linea);
-                    continue;
-                }
 
                 try {
                     Cliente cliente = new Cliente();
-                    cliente.setDni(datos[3]);
+                    cliente.setDni(Long.parseLong(datos[0]));
                     cliente.setNombre(datos[1]);
                     cliente.setApellido(datos[2]);
-                    cliente.setDireccion(datos[4]);
-                    cliente.setFechaNacimiento(LocalDate.parse(datos[5]));
-                    cliente.setTipoPersona(TipoPersona.fromString(datos[6]));
-                    cliente.setBanco(datos[7]);
-                    cliente.setFechaAlta(LocalDate.parse(datos[8].replace(".", "")));
+                    cliente.setDireccion(datos[3]);
+                    cliente.setFechaNacimiento(LocalDate.parse(datos[4]));
+                    cliente.setTipoPersona(TipoPersona.fromString(datos[5]));
+                    cliente.setBanco(datos[6]);
+                    cliente.setFechaAlta(LocalDate.parse(datos[7].replace(".", "")));
 
                     clientes.add(cliente);
                 } catch (DateTimeParseException e) {

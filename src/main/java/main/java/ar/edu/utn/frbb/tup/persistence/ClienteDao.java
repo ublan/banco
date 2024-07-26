@@ -35,17 +35,15 @@ public class ClienteDao {
         }
     }
 
-    public Cliente findByDni(String dni) {
-        System.out.println("Buscando cliente por DNI: " + dni);
+    public Cliente findByDni(long dni) {
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
             String linea;
             lector.readLine(); // Leer la línea de encabezado
             while ((linea = lector.readLine()) != null) {
                 String[] datos = linea.split(",");
-                if (datos.length > 0 && datos[0].equals(dni)) {
-                    System.out.println("Cliente encontrado: " + linea);
+                if (Long.parseLong(datos[0]) == dni) {
                     Cliente cliente = new Cliente();
-                    cliente.setDni(datos[0]);
+                    cliente.setDni(Long.parseLong(datos[0]));
                     cliente.setNombre(datos[1]);
                     cliente.setApellido(datos[2]);
                     cliente.setDireccion(datos[3]);
@@ -66,7 +64,7 @@ public class ClienteDao {
     public Cliente parseDatosToObjet(String[] datos){
         Cliente cliente = new Cliente();
 
-        cliente.setDni(datos[0]);
+        cliente.setDni(Long.parseLong(datos[0]));
         cliente.setNombre(datos[1]);
         cliente.setApellido(datos[2]);
         cliente.setDireccion(datos[3]);

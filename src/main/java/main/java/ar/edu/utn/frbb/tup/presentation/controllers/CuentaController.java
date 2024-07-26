@@ -1,13 +1,15 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.controllers;
 
-import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
-import main.java.ar.edu.utn.frbb.tup.exception.ClienteNotFoundException;
+import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
+import main.java.ar.edu.utn.frbb.tup.exception.CuentaNoEncontradaException;
 import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
 import main.java.ar.edu.utn.frbb.tup.service.control.CuentaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import main.java.ar.edu.utn.frbb.tup.presentation.validator.CuentaValidator;
+import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.CuentaDto;
 
 import java.util.List;
 
@@ -18,48 +20,31 @@ public class CuentaController {
     @Autowired
     private CuentaService cuentaService;
 
-    @PostMapping("/crearCuenta/{dni}")
-    public ResponseEntity<String> crearCuenta(@RequestBody Cuenta cuenta, @PathVariable String dni) {
-        try {
-            cuentaService.darDeAltaCuenta(cuenta, dni);
-            return new ResponseEntity<>("Cuenta creada para el titular con DNI: " + dni, HttpStatus.CREATED);
-        } catch (ClienteNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error interno del servidor", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @Autowired
+    private CuentaValidator cuentaValidator;
+
+    @PostMapping("/crearCuenta")
+    public ResponseEntity<Cuenta> crearCuenta(@RequestBody CuentaDto cuentaDto) throws ClienteNoEncontradoException{
+
+        cuentaValidator.validarCuenta(cuentaDto);      
+        return new ResponseEntity<>(cuentaService.darDeAltaCuenta(cuentaDto) , HttpStatus.CREATED);
     }
 
     @GetMapping("/mostrar/{dni}")
-    public ResponseEntity<List<String>> mostrarCuentasPorDni(@PathVariable String dni) {
-        try {
-            List<String> cuentas = cuentaService.mostrarCuenta(dni);
-            return new ResponseEntity<>(cuentas, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<Cuenta>> mostrarCuentasPorDni(@PathVariable long dni) throws CuentaNoEncontradaException, ClienteNoEncontradoException {
+        List<Cuenta> cuentas = cuentaService.mostrarCuenta(dni);
+        return new ResponseEntity<>(cuentas, HttpStatus.OK);
     }
 
     @GetMapping("/mostrar")
-    public ResponseEntity<List<String>> mostrarTodasLasCuentas() {
-        try {
-            List<String> cuentas = cuentaService.obtenerTodasLasCuentas();
-            return new ResponseEntity<>(cuentas, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<List<Cuenta>> mostrarTodasLasCuentas() throws CuentaNoEncontradaException {
+        List<Cuenta> cuentas = cuentaService.obtenerTodasLasCuentas();
+        return new ResponseEntity<>(cuentas, HttpStatus.OK);
     }
 
     @DeleteMapping("/eliminar/{cbu}")
-    public ResponseEntity<String> eliminarCuentaPorCBU(@PathVariable("cbu") String cbu) {
-        try {
-            cuentaService.borrarCuenta(cbu);
-            return new ResponseEntity<>("Cuenta eliminada correctamente", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Cuenta> eliminarCuentaPorCBU(@PathVariable long cbu) throws CuentaNoEncontradaException { 
+        return new ResponseEntity<>(cuentaService.borrarCuenta(cbu), HttpStatus.OK);
     }
 }
 

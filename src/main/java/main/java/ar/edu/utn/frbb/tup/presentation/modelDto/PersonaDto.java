@@ -3,17 +3,17 @@ package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
 
 public class PersonaDto {
-    private String dni;
+    private long dni;
     private String nombre;
     private String apellido;
     private String direccion;
     private String fechaNacimiento;
 
-    public String getDni() {
+    public long getDni() {
         return dni;
     }
 
-    public void setDni(String dni) {
+    public void setDni(long dni) {
         this.dni = dni;
     }
     public String getNombre() {

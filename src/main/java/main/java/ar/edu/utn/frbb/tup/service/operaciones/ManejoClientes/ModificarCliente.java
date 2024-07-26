@@ -22,7 +22,7 @@ public class ModificarCliente {
             String linea;
             while ((linea = lector.readLine()) != null) {
                 String[] campos = linea.split(",");
-                if (campos[0].trim().equals(cliente.getDni().trim())) {
+                if (Long.parseLong(campos[0]) == cliente.getDni()) {
                     clienteEncontrado = true;
                     campos[1] = cliente.getNombre();
                     campos[2] = cliente.getApellido();

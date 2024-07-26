@@ -22,7 +22,6 @@ public class CrearCliente {
     public void validarClienteIfExist(Cliente cliente) throws ClienteAlreadyExistsException {
         Cliente clienteExistente = clienteDao.findByDni(cliente.getDni());
         if (clienteExistente != null) {
-            System.err.println("Cliente ya existe con DNI: " + cliente.getDni());
             throw new ClienteAlreadyExistsException("Ya existe un cliente con DNI " + cliente.getDni());
         }
     }
@@ -41,7 +40,7 @@ public class CrearCliente {
     }
     
     private String clienteToCsv(Cliente cliente) {
-        return cliente.getDni() + "," +
+        return  cliente.getDni() + "," +
                 cliente.getNombre() + "," +
                 cliente.getApellido() + "," +
                 cliente.getDireccion() + "," +

@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-     @ExceptionHandler(value = { ClienteNoEncontradoException.class}) //Maneja las excepciones cuando los datos no son encontrado
+     @ExceptionHandler(value = { ClienteNoEncontradoException.class, CuentaNoEncontradaException.class}) //Maneja las excepciones cuando los datos no son encontrado
     protected ResponseEntity<Object> handleMateriaNotFound(Exception ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();

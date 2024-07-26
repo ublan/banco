@@ -58,7 +58,7 @@ public class CuentaDao {
                 escritor.write(cuenta.getBalance() + ",");
                 escritor.write(cuenta.getMoneda() + ",");
                 escritor.write(cuenta.getFechaCreacion().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ",");
-                escritor.write(cuenta.getTitular().getDni() + "");
+                escritor.write(cuenta.getDniTitular() + "");
                 escritor.newLine();
             }
         } catch (IOException ex) {
@@ -82,7 +82,7 @@ public class CuentaDao {
             escritor.write(cuenta.getBalance() + ",");
             escritor.write(cuenta.getMoneda() + ",");
             escritor.write(cuenta.getFechaCreacion().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ",");
-            escritor.write(cuenta.getTitular().getDni() + "");
+            escritor.write(cuenta.getDniTitular()+"");
             escritor.newLine();
 
             System.out.println("Datos de la cuenta guardados en " + NOMBRE_ARCHIVO + " correctamente.");
@@ -101,7 +101,7 @@ public class CuentaDao {
                         long dniCliente = Long.parseLong(campos[0]);
                         if (dniCliente == dni) {
                             Cliente cliente = new Cliente();
-                            cliente.setDni(campos[0]);
+                            cliente.setDni(Long.parseLong(campos[0]));
                             cliente.setNombre(campos[1]);
                             cliente.setApellido(campos[2]);
                             return cliente;
@@ -131,14 +131,13 @@ public class CuentaDao {
                 }
                 
                 Cuenta cuenta = new Cuenta();
-                cuenta.setCBU(Long.parseLong(datos[0])); // Convertir de String a long
+                cuenta.setCBU(Long.parseLong(datos[0]));
                 cuenta.setNombre(datos[1]);
                 cuenta.setTipoCuenta(TipoCuenta.valueOf(datos[2]));
-                cuenta.setBalance((int) Double.parseDouble(datos[3])); // Convertir de double a int
+                cuenta.setBalance(Double.parseDouble(datos[3])); 
                 cuenta.setMoneda(TipoMoneda.valueOf(datos[4]));
                 cuenta.setFechaCreacion(LocalDateTime.parse(datos[5], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-                // Suponiendo que el titular se ha cargado previamente y es parte de la cuenta
-                cuenta.setTitular(new Cliente()); // Ajustar según sea necesario
+                cuenta.setDniTitular(Long.parseLong(datos[6]));
     
                 cuentas.add(cuenta);
             }
@@ -148,5 +147,16 @@ public class CuentaDao {
         return cuentas;
     }
     
+    public Cuenta parseCuentaToObjet(String[] datos){
+        Cuenta cuenta = new Cuenta();
+        cuenta.setCBU(Long.parseLong(datos[0]));
+        cuenta.setNombre(datos[1]);
+        cuenta.setTipoCuenta(TipoCuenta.valueOf(datos[2]));
+        cuenta.setBalance(Double.parseDouble(datos[3])); 
+        cuenta.setMoneda(TipoMoneda.valueOf(datos[4]));
+        cuenta.setFechaCreacion(LocalDateTime.parse(datos[5], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        cuenta.setDniTitular(Long.parseLong(datos[6]));
+        return cuenta;
+    }
 
 }

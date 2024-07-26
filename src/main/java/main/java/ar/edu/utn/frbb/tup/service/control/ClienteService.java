@@ -40,7 +40,7 @@ public class ClienteService {
     }
     
     
-    public Cliente borrarCliente(String dni) throws ClienteNoEncontradoException {
+    public Cliente borrarCliente(long dni) throws ClienteNoEncontradoException {
         Cliente cliente = borrarCliente.borrarCliente(dni);
         if (cliente == null) {
             throw new  ClienteNoEncontradoException("No se encontro el cliente con dni: " + dni);   
@@ -53,7 +53,7 @@ public class ClienteService {
         modificarCliente.modificarCliente(cliente);
     }
 
-    public Cliente mostrarCliente(String dni) throws ClienteNoEncontradoException {
+    public Cliente mostrarCliente(long dni) throws ClienteNoEncontradoException {
         Cliente cliente = mostrarCliente.mostrarCliente(dni);
         if (cliente == null) {
             throw new ClienteNoEncontradoException("No se encontro el cliente con dni: " + dni);

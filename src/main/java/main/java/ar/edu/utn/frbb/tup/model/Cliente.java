@@ -2,15 +2,12 @@ package main.java.ar.edu.utn.frbb.tup.model;
 
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Cliente extends Persona {
 
     private TipoPersona tipoPersona;
     private String banco;
     private LocalDate fechaAlta;
-    private Set<Cuenta> cuentas = new HashSet<>();
 
     // Constructor que acepta un ClienteDto
     public Cliente(ClienteDto clienteDto) {
@@ -24,11 +21,11 @@ public class Cliente extends Persona {
         );
         this.tipoPersona = TipoPersona.fromString(clienteDto.getTipoPersona()); 
         this.banco = clienteDto.getBanco();
-        this.fechaAlta = LocalDate.now(); // O puedes obtener esta fecha de clienteDto si está disponible
+        this.fechaAlta = LocalDate.now();
     }
 
     public Cliente() {
-        super(null, null, null, null, null);
+        super();
     }
 
     public TipoPersona getTipoPersona() {
@@ -55,23 +52,6 @@ public class Cliente extends Persona {
         this.fechaAlta = fechaAlta;
     }
 
-    public Set<Cuenta> getCuentas() {
-        return cuentas;
-    }
-
-    public void addCuenta(Cuenta cuenta) {
-        this.cuentas.add(cuenta);
-        cuenta.setTitular(this);
-    }
-
-    public boolean tieneCuenta(TipoCuenta tipoCuenta, String moneda) {
-        for (Cuenta cuenta : cuentas) {
-            if (tipoCuenta.equals(cuenta.getTipoCuenta()) && moneda.equals(cuenta.getMoneda())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 }
 

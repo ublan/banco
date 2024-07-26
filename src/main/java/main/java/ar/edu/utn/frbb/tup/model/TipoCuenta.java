@@ -22,6 +22,6 @@ public enum TipoCuenta {
                 }
             }
         }
-        throw new IllegalArgumentException("No se pudo encontrar un TipoCuenta con la descripción: " + text);
+        throw new IllegalArgumentException("El tipo de cuenta debe ser CORRIENTE o AHORRO");
     }
 }

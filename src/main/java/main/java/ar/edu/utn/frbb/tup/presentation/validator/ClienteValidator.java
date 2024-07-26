@@ -9,7 +9,15 @@ import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
 @Component
 public class ClienteValidator {
 
-        public void validarCliente(ClienteDto clientedto) {
+    public void validarCliente(ClienteDto clientedto) {
+
+        if (clientedto.getDni() == 0) {
+            throw new IllegalArgumentException("El dni del titular de la cuenta es obligatorio");
+        }
+    
+        if (clientedto.getDni() < 10000000 || clientedto.getDni() > 99999999) {
+            throw new IllegalArgumentException("El dni del titular de la cuenta debe ser de 8 digitos");
+        }
 
         if (clientedto.getNombre().isEmpty() || clientedto.getNombre() == null) {
             throw new IllegalArgumentException("El nombre del cliente es obligatorio");
@@ -35,9 +43,6 @@ public class ClienteValidator {
             throw new IllegalArgumentException("El tipo de persona no puede ser nulo");
             
         }
-        if (!clientedto.getTipoPersona().equals(TipoPersona.PERSONA_FISICA) && !clientedto.getTipoPersona().equals(TipoPersona.PERSONA_JURIDICA)) {
-            throw new IllegalArgumentException("El tipo de persona no puede ser nulo");
-            }
 
     }
 

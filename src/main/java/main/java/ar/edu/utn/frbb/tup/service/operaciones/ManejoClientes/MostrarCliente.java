@@ -14,21 +14,21 @@ public class MostrarCliente {
 
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
 
-    public Cliente mostrarCliente(String dni) {
+    public Cliente mostrarCliente(long dni) {
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
             String linea;
             while ((linea = lector.readLine()) != null) {
                 String[] campos = linea.split(",");
-                if (campos.length > 1 && campos[3].trim().equals(dni.trim())) {
+                if (Long.parseLong(campos[0]) == dni) {
                     Cliente cliente = new Cliente();
-                    cliente.setDni(campos[3]);
+                    cliente.setDni(Long.parseLong(campos[0]));
                     cliente.setNombre(campos[1]);
                     cliente.setApellido(campos[2]);
-                    cliente.setDireccion(campos[4]);
-                    cliente.setFechaNacimiento(LocalDate.parse(campos[5]));
-                    cliente.setTipoPersona(TipoPersona.fromString(campos[6]));
-                    cliente.setBanco(campos[7]);
-                    cliente.setFechaAlta(LocalDate.parse(campos[8].replace(".", "")));
+                    cliente.setDireccion(campos[3]);
+                    cliente.setFechaNacimiento(LocalDate.parse(campos[4]));
+                    cliente.setTipoPersona(TipoPersona.fromString(campos[5]));
+                    cliente.setBanco(campos[6]);
+                    cliente.setFechaAlta(LocalDate.parse(campos[7].replace(".", "")));
                     return cliente;
                 }
             }

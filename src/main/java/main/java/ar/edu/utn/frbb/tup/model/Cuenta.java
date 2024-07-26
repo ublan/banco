@@ -8,12 +8,11 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 public class Cuenta {
-    private long numeroCuenta;
+    private long dniTitular;
     private String nombre;
     private LocalDateTime fechaCreacion;
-    private int balance;
+    private double balance;
     private TipoCuenta tipoCuenta;
-    private Cliente titular;
     private long CBU; 
     private TipoMoneda moneda;
 
@@ -21,14 +20,25 @@ public class Cuenta {
         // Constructor vacío
     }
 
-    // Getters y setters
-
-    public Cliente getTitular() {
-        return titular;
+    public Cuenta(CuentaDto cuentaDto) {
+        this.dniTitular = cuentaDto.getDniTitular();
+        this.nombre = cuentaDto.getNombre();
+        this.balance = 0;
+        this.tipoCuenta = TipoCuenta.fromString(cuentaDto.getTipoCuenta()); 
+        this.CBU = Cuenta.generarCBU();
+        this.moneda = TipoMoneda.fromString(cuentaDto.getMoneda());
+        this.fechaCreacion = LocalDateTime.now();
     }
 
-    public void setTitular(Cliente titular) {
-        this.titular = titular;
+    // Getters y setters
+
+    public long getDniTitular() {
+        return dniTitular;
+    }
+
+    public Cuenta setDniTitular(long dniTitular) {
+        this.dniTitular = dniTitular;
+        return this;
     }
 
     public TipoCuenta getTipoCuenta() {
@@ -58,11 +68,11 @@ public class Cuenta {
         return this;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public Cuenta setBalance(int balance) {
+    public Cuenta setBalance(double balance) {
         this.balance = balance;
         return this;
     }
@@ -75,22 +85,13 @@ public class Cuenta {
         this.CBU = CBU;
     }
 
-    public void generarCBU() {
+    public static long generarCBU() {
         Random random = new Random();
-        // Generar un número aleatorio de 9 dígitos como string
         StringBuilder cbuBuilder = new StringBuilder();
-        for (int i = 0; i < 9; i++) {
-            cbuBuilder.append(random.nextInt(10)); // Agregar un dígito aleatorio (0-9)
+        for (int i = 0; i < 8; i++) {
+            cbuBuilder.append(random.nextInt(10)); 
         }
-        this.CBU = Long.parseLong(cbuBuilder.toString()); // Convertir el string a long
-    }
-
-    public long getNumeroCuenta() {
-        return numeroCuenta;
-    }
-
-    public void setNumeroCuenta(long numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
+        return Long.parseLong(cbuBuilder.toString());
     }
 
     public TipoMoneda getMoneda() {
@@ -102,13 +103,6 @@ public class Cuenta {
         return this;
     }
 
-    public CuentaDto toDto() {
-        CuentaDto cuentaDto = new CuentaDto();
-        cuentaDto.setNombre(this.nombre);
-        cuentaDto.setBalance(0);
-        cuentaDto.setTipoCuenta(this.tipoCuenta);
-        cuentaDto.setTipoMoneda(this.moneda != null ? this.moneda.toString() : null);
-        return cuentaDto;
-    }
+
 }
 

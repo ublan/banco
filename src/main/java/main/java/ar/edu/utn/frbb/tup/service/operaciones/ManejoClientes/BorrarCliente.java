@@ -17,17 +17,18 @@ public class BorrarCliente {
 
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
 
-    public Cliente borrarCliente(String dni) {
-        List<String> clientes = new ArrayList<>();
+    public Cliente borrarCliente(long dni) {
+        List<Cliente> clientes = new ArrayList<>();
+        List<String> clientesStr = new ArrayList<>();
         Cliente cliente = null;
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
             String linea;
             while ((linea = lector.readLine()) != null) {
                 String[] campos = linea.split(",");
-                if (!campos[0].equals(dni)) {
-                    clientes.add(linea);
+                if (Long.parseLong(campos[0]) != dni) {
+                    clientes.add(clienteDao.parseDatosToObjet(campos));
+                    clientesStr.add(linea);
                 } else {
-                   
                     cliente = clienteDao.parseDatosToObjet(campos);
                 }
             }
@@ -38,7 +39,7 @@ public class BorrarCliente {
 
         if (cliente != null) {
             try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO))) {
-                for (String clienteStr : clientes) {
+                for (String clienteStr : clientesStr) {
                     escritor.write(clienteStr);
                     escritor.newLine();
                 }

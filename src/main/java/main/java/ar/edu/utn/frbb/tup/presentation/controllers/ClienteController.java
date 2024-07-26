@@ -39,7 +39,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{dni}")
-    public ResponseEntity<Cliente> borrarCliente(@PathVariable String dni) throws ClienteNoEncontradoException {   
+    public ResponseEntity<Cliente> borrarCliente(@PathVariable long dni) throws ClienteNoEncontradoException {   
         return new ResponseEntity<>(clienteService.borrarCliente(dni), HttpStatus.OK);
     }
 
@@ -51,7 +51,7 @@ public class ClienteController {
     }
 
     @GetMapping("/{dni}")
-    public ResponseEntity<Cliente> mostrarCliente(@PathVariable String dni) throws ClienteNoEncontradoException {
+    public ResponseEntity<Cliente> mostrarCliente(@PathVariable long dni) throws ClienteNoEncontradoException {
         Cliente cliente = clienteService.mostrarCliente(dni);
         if (cliente != null) {
             return new ResponseEntity<>(cliente, HttpStatus.OK);
