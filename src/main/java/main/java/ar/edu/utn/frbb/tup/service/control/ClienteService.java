@@ -33,15 +33,19 @@ public class ClienteService {
     @Autowired
     private MostrarTodosClientes mostrarTodosClientes;
 
-    public void darDeAltaCliente(ClienteDto clientedto) throws ClienteAlreadyExistsException {
+    public Cliente darDeAltaCliente(ClienteDto clientedto) throws ClienteAlreadyExistsException {
         Cliente cliente = new Cliente(clientedto);
         crearCliente.validarClienteIfExist(cliente);
         crearCliente.crearCliente(cliente);
+        return cliente;
     }
     
     
     public Cliente borrarCliente(long dni) throws ClienteNoEncontradoException {
         Cliente cliente = borrarCliente.borrarCliente(dni);
+
+        System.out.println("Hola se borro");
+        System.out.println(cliente);
         if (cliente == null) {
             throw new  ClienteNoEncontradoException("No se encontro el cliente con dni: " + dni);   
         }

@@ -23,6 +23,8 @@ public class BorrarCliente {
         Cliente cliente = null;
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
             String linea;
+            linea = lector.readLine();
+            clientesStr.add(linea);
             while ((linea = lector.readLine()) != null) {
                 String[] campos = linea.split(",");
                 if (Long.parseLong(campos[0]) != dni) {

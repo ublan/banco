@@ -12,16 +12,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
 @ControllerAdvice
 public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
-
-     @ExceptionHandler(value = { ClienteNoEncontradoException.class, CuentaNoEncontradaException.class}) //Maneja las excepciones cuando los datos no son encontrado
+    @ExceptionHandler(value = {ClienteNoEncontradoException.class, CuentaNoEncontradaException.class}) //Maneja las excepciones cuando los datos no son encontrado
     protected ResponseEntity<Object> handleMateriaNotFound(Exception ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
         error.setErrorCode(404);
         error.setErrorMessage(exceptionMessage);
-
         return handleExceptionInternal(ex, error, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 

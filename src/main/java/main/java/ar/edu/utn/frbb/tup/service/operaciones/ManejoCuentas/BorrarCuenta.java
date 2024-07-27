@@ -9,10 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
 import main.java.ar.edu.utn.frbb.tup.persistence.CuentaDao;
 
+@Component
 public class BorrarCuenta {
     private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Cuentas.txt";
 
@@ -21,10 +23,11 @@ public class BorrarCuenta {
     public Cuenta borrarCuenta(long CBU) {
         List<Cuenta> cuentas = new ArrayList<>();
         List<String> cuentasStr = new ArrayList<>();
-        Cuenta cuenta = null;
+        Cuenta cuenta = null; 
         CuentaDao cuentaDao = new CuentaDao();
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
-            String linea;
+            String linea = lector.readLine();
+            cuentasStr.add(linea);
             while ((linea = lector.readLine()) != null) {
                 String[] campos = linea.split(",");
                 if (Long.parseLong(campos[0]) != CBU) {
@@ -41,7 +44,6 @@ public class BorrarCuenta {
 
         if (cuenta != null) {
             try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO))) {
-
                 for (String cuentaStr : cuentasStr) {
                     escritor.write(cuentaStr);
                     escritor.newLine();

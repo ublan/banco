@@ -26,16 +26,9 @@ public class ClienteController {
     private ClienteValidator clienteValidator;
     
     @PostMapping
-    public ResponseEntity<String> darDeAltaCliente(@RequestBody ClienteDto clientedto) {
-        try {
-            clienteValidator.validarCliente(clientedto);
-            clienteService.darDeAltaCliente(clientedto);
-            return new ResponseEntity<>("Cliente creado exitosamente.", HttpStatus.CREATED);
-        } catch (ClienteAlreadyExistsException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error interno del servidor.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Cliente> darDeAltaCliente(@RequestBody ClienteDto clientedto) throws ClienteAlreadyExistsException {
+        clienteValidator.validarCliente(clientedto);
+        return new ResponseEntity<>(clienteService.darDeAltaCliente(clientedto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{dni}")
