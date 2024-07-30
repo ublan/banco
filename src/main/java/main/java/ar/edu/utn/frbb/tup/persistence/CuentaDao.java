@@ -18,8 +18,8 @@ import main.java.ar.edu.utn.frbb.tup.model.*;
 @Repository
 
 public class CuentaDao {
-    private static final String NOMBRE_ARCHIVO = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt"; //cambiar aca 
-    private static final String NOMBRE_ARCHIVO1 = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt"; // cambiar
+    private static final String NOMBRE_ARCHIVO = "src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt"; //cambiar aca 
+    private static final String NOMBRE_ARCHIVO1 = "src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt"; // cambiar
 
 
         public boolean verificarExistenciaCuenta(long cbu) {

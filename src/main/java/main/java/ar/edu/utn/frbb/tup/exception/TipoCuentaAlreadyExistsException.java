@@ -1,6 +1,6 @@
 package main.java.ar.edu.utn.frbb.tup.exception;
 
-public class TipoCuentaAlreadyExistsException extends Throwable {
+public class TipoCuentaAlreadyExistsException extends Exception {
     public TipoCuentaAlreadyExistsException(String message) {
         super(message);
     }

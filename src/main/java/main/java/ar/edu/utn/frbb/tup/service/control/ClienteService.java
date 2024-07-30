@@ -2,13 +2,12 @@ package main.java.ar.edu.utn.frbb.tup.service.control;
 
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
-import main.java.ar.edu.utn.frbb.tup.exception.ModificarClienteException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
 import main.java.ar.edu.utn.frbb.tup.presentation.validator.ClienteValidator;
-import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoClientes.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
+import main.java.ar.edu.utn.frbb.tup.persistence.ClienteDao;
 
 import java.util.List;
 
@@ -16,26 +15,12 @@ import java.util.List;
 public class ClienteService {
 
     @Autowired
-    private ClienteValidator clienteValidator;
+    private ClienteDao clienteDao, crearCliente, borrarCliente, modificarCliente, mostrarCliente, mostrarTodosClientes;
 
-    @Autowired
-    private CrearCliente crearCliente;
-
-    @Autowired
-    private BorrarCliente borrarCliente;
-
-    @Autowired
-    private ModificarCliente modificarCliente;
-
-    @Autowired
-    private MostrarCliente mostrarCliente;
-
-    @Autowired
-    private MostrarTodosClientes mostrarTodosClientes;
 
     public Cliente darDeAltaCliente(ClienteDto clientedto) throws ClienteAlreadyExistsException {
         Cliente cliente = new Cliente(clientedto);
-        crearCliente.validarClienteIfExist(cliente);
+        clienteDao.validarClienteIfExist(cliente);
         crearCliente.crearCliente(cliente);
         return cliente;
     }
@@ -43,11 +28,10 @@ public class ClienteService {
     
     public Cliente borrarCliente(long dni) throws ClienteNoEncontradoException {
         Cliente cliente = borrarCliente.borrarCliente(dni);
-
         System.out.println("Hola se borro");
         System.out.println(cliente);
         if (cliente == null) {
-            throw new  ClienteNoEncontradoException("No se encontro el cliente con dni: " + dni);   
+            throw new ClienteNoEncontradoException("No se encontro el cliente con ese dni");   
         }
         return cliente;
     }
@@ -65,12 +49,12 @@ public class ClienteService {
         return cliente;
     }
 
-    public List<Cliente> obtenerTodosLosClientes() {
-        List<Cliente> todosLosClientes = mostrarTodosClientes.obtenerTodosLosClientes();
+    public List<Cliente> mostrarTodosLosClientes() throws ClienteNoEncontradoException {
+        List<Cliente> todosLosClientes = mostrarTodosClientes.mostrarTodosLosClientes();
         if (todosLosClientes.isEmpty()) {
-            throw new IllegalArgumentException("No se encontraron clientes");
+            throw new ClienteNoEncontradoException("No se encontraron clientes");
         }
-        return mostrarTodosClientes.obtenerTodosLosClientes();
+        return mostrarTodosClientes.mostrarTodosLosClientes();
     }
 }
 

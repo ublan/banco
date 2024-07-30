@@ -54,8 +54,8 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> obtenerTodosLosClientes() {
-        List<Cliente> clientes = clienteService.obtenerTodosLosClientes();
+    public ResponseEntity<List<Cliente>> mostrarTodosLosClientes() throws ClienteNoEncontradoException {
+        List<Cliente> clientes = clienteService.mostrarTodosLosClientes();
         return new ResponseEntity<>(clientes, HttpStatus.OK);   
     }
 

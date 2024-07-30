@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class TransferenciaDao {
 
-    private static final String NOMBRE_ARCHIVO_TRANSFERENCIAS = "C:\\Users\\Uriel\\Desktop\\banco\\src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Transferencias.txt";
+    private static final String NOMBRE_ARCHIVO_TRANSFERENCIAS = "src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Transferencias.txt";
 
     public List<TransferenciaDto> obtenerTransferenciasPorCbu(long cbu) {
         List<TransferenciaDto> transacciones = new ArrayList<>();
