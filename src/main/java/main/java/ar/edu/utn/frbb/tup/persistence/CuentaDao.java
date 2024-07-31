@@ -37,7 +37,7 @@ public class CuentaDao {
             
             for (Cuenta cuenta : cuentas) {
                 if (cuenta.getCBU() == cbu) {
-                    cuenta.setBalance((int) nuevoBalance); // Convertir de double a int
+                    cuenta.setBalance(nuevoBalance);
                 }
                 escritor.write(cuenta.getCBU() + ",");
                 escritor.write(cuenta.getNombre() + ",");
@@ -164,7 +164,7 @@ public class CuentaDao {
         CuentaDao cuentaDao = new CuentaDao();
 
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
-            String linea;
+            String linea = lector.readLine();
             while ((linea = lector.readLine()) != null) {
                 String[] campos = linea.split(",");
                 if (Long.parseLong(campos[6]) == dni) {

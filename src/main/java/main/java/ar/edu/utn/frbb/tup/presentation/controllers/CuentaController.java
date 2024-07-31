@@ -3,12 +3,13 @@ package main.java.ar.edu.utn.frbb.tup.presentation.controllers;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
 import main.java.ar.edu.utn.frbb.tup.exception.CuentaNoEncontradaException;
 import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
-import main.java.ar.edu.utn.frbb.tup.service.control.CuentaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import main.java.ar.edu.utn.frbb.tup.presentation.validator.CuentaValidator;
+import main.java.ar.edu.utn.frbb.tup.service.CuentaService;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.CuentaDto;
 
 import java.util.List;

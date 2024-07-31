@@ -30,7 +30,7 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
     }
 
     @ExceptionHandler(value
-            = { ClienteNoEncontradoException.class, CuentaNoEncontradaException.class})
+            = {ClienteNoEncontradoException.class, CuentaNoEncontradaException.class})
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();

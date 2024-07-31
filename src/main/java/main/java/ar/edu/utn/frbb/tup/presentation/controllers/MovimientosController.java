@@ -1,6 +1,5 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.controllers;
 
-import main.java.ar.edu.utn.frbb.tup.service.control.MovimientoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +9,8 @@ import main.java.ar.edu.utn.frbb.tup.exception.CuentaNoEncontradaException;
 import main.java.ar.edu.utn.frbb.tup.exception.CuentaSinSaldoException;
 import main.java.ar.edu.utn.frbb.tup.exception.MomivientosVaciosException;
 import main.java.ar.edu.utn.frbb.tup.model.Movimiento;
+import main.java.ar.edu.utn.frbb.tup.service.MovimientoService;
+
 import java.util.List;
 
 @RestController

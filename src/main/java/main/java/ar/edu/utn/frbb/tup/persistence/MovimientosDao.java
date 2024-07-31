@@ -1,10 +1,8 @@
 package main.java.ar.edu.utn.frbb.tup.persistence;
 
-import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
 import main.java.ar.edu.utn.frbb.tup.model.Movimiento;
 import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;

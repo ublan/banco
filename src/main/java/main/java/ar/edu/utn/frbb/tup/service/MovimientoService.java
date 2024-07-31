@@ -1,4 +1,4 @@
-package main.java.ar.edu.utn.frbb.tup.service.control;
+package main.java.ar.edu.utn.frbb.tup.service;
 
 
 import main.java.ar.edu.utn.frbb.tup.exception.CuentaNoEncontradaException;

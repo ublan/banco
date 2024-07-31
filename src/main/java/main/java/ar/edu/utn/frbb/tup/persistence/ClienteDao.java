@@ -7,7 +7,6 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
 import main.java.ar.edu.utn.frbb.tup.model.TipoPersona;
@@ -17,13 +16,6 @@ import org.springframework.stereotype.Repository;
 public class ClienteDao {
 
     private static final String NOMBRE_ARCHIVO = "src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt";
-
-    public void validarClienteIfExist(Cliente cliente) throws ClienteAlreadyExistsException {
-        Cliente clienteExistente = findByDni(cliente.getDni());
-        if (clienteExistente != null) {
-            throw new ClienteAlreadyExistsException("Ya existe un cliente con DNI " + cliente.getDni());
-        }
-    }
     
     
     public void crearCliente(Cliente cliente) {

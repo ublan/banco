@@ -1,4 +1,4 @@
-package main.java.ar.edu.utn.frbb.tup.service.control;
+package main.java.ar.edu.utn.frbb.tup.service;
 
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
@@ -34,7 +34,13 @@ public class ClienteService {
 
     public Cliente darDeAltaCliente(ClienteDto clientedto) throws ClienteAlreadyExistsException {
         Cliente cliente = new Cliente(clientedto);
-        clienteDao.validarClienteIfExist(cliente);
+
+        Cliente clienteExistente = clienteDao.findByDni(cliente.getDni());
+
+        if (clienteExistente != null) {
+            throw new ClienteAlreadyExistsException("Ya existe un cliente con DNI " + cliente.getDni());
+        }
+
         clienteDao.crearCliente(cliente);
         return cliente;
     }

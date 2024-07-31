@@ -2,12 +2,13 @@ package main.java.ar.edu.utn.frbb.tup.presentation.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import main.java.ar.edu.utn.frbb.tup.service.control.ClienteService;
+
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import main.java.ar.edu.utn.frbb.tup.presentation.validator.ClienteValidator;
+import main.java.ar.edu.utn.frbb.tup.service.ClienteService;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
 
 

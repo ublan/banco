@@ -5,7 +5,8 @@ import main.java.ar.edu.utn.frbb.tup.exception.CuentaSinSaldoException;
 import main.java.ar.edu.utn.frbb.tup.exception.TipoMonedasInvalidasException;
 import main.java.ar.edu.utn.frbb.tup.model.Transferencia;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
-import main.java.ar.edu.utn.frbb.tup.service.control.TransferenciaService;
+import main.java.ar.edu.utn.frbb.tup.service.TransferenciaService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
