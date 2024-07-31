@@ -1,7 +1,6 @@
 package main.java.ar.edu.utn.frbb.tup.model;
 
 public enum TipoOperacion {
-    TRANSFERENCIA("TRANSFERENCIA"),
     DEPOSITO("DEPOSITO"),
     RETIRO("RETIRO");
 

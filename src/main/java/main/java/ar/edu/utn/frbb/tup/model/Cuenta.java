@@ -1,7 +1,5 @@
 package main.java.ar.edu.utn.frbb.tup.model;
 
-import main.java.ar.edu.utn.frbb.tup.exception.CantidadNegativaException;
-import main.java.ar.edu.utn.frbb.tup.exception.NoAlcanzaException;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.CuentaDto;
 
 import java.time.LocalDateTime;

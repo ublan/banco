@@ -13,4 +13,5 @@ public class BanelcoService {
         int numeroAleatorio = random.nextInt();
         return numeroAleatorio % 2 == 0;
     }
+    
 }

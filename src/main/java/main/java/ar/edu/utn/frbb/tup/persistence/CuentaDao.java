@@ -16,21 +16,8 @@ import org.springframework.stereotype.Repository;
 import main.java.ar.edu.utn.frbb.tup.model.*;
 
 @Repository
-
 public class CuentaDao {
     private static final String NOMBRE_ARCHIVO = "src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\DataBase\\Cuentas.txt"; //cambiar aca 
-    private static final String NOMBRE_ARCHIVO1 = "src\\main\\java\\main\\java\\ar\\edu\\utn\\frbb\\tup\\persistence\\database\\Clientes.txt"; // cambiar
-
-
-        public boolean verificarExistenciaCuenta(long cbu) {
-        List<Cuenta> cuentas = leerCuentasDeArchivo();
-        for (Cuenta cuenta : cuentas) {
-            if (cuenta.getCBU() == cbu) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public Cuenta obtenerCuentaPorCBU(long cbu) {
         List<Cuenta> cuentas = leerCuentasDeArchivo();
@@ -66,7 +53,7 @@ public class CuentaDao {
         }
     }
     
-    public static void escribirEnArchivo(Cuenta cuenta) {
+    public void escribirEnArchivo(Cuenta cuenta) {
         boolean archivoNuevo = !(new File(NOMBRE_ARCHIVO).exists());
 
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO, true))) {
@@ -91,31 +78,6 @@ public class CuentaDao {
         }
     }
 
-    public static Cliente buscarClientePorDni(long dni) {
-        try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO1))) {
-            String linea;
-            while ((linea = lector.readLine()) != null) {
-                String[] campos = linea.split(",");
-                if (campos.length > 0) {
-                    try {
-                        long dniCliente = Long.parseLong(campos[0]);
-                        if (dniCliente == dni) {
-                            Cliente cliente = new Cliente();
-                            cliente.setDni(Long.parseLong(campos[0]));
-                            cliente.setNombre(campos[1]);
-                            cliente.setApellido(campos[2]);
-                            return cliente;
-                        }
-                    } catch (NumberFormatException e) {
-                        System.out.println("Error al convertir el primer campo a long: " + campos[0]);
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null; 
-    }
 
     private List<Cuenta> leerCuentasDeArchivo() {
         List<Cuenta> cuentas = new ArrayList<>();
@@ -157,6 +119,80 @@ public class CuentaDao {
         cuenta.setFechaCreacion(LocalDateTime.parse(datos[5], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         cuenta.setDniTitular(Long.parseLong(datos[6]));
         return cuenta;
+    }
+
+    public Cuenta borrarCuenta(long CBU) {
+        List<Cuenta> cuentas = new ArrayList<>();
+        List<String> cuentasStr = new ArrayList<>();
+        Cuenta cuenta = null; 
+        CuentaDao cuentaDao = new CuentaDao();
+        try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
+            String linea = lector.readLine();
+            cuentasStr.add(linea);
+            while ((linea = lector.readLine()) != null) {
+                String[] campos = linea.split(",");
+                if (Long.parseLong(campos[0]) != CBU) {
+                    cuentas.add(cuentaDao.parseCuentaToObjet(campos));
+                    cuentasStr.add(linea);
+                } else {
+                    cuenta = cuentaDao.parseCuentaToObjet(campos);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("No se pudo acceder a la base de datos");
+        }
+
+        if (cuenta != null) {
+            try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO))) {
+                for (String cuentaStr : cuentasStr) {
+                    escritor.write(cuentaStr);
+                    escritor.newLine();
+                }
+                return cuenta;
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("No se pudo escribir en el archivo");
+            }
+        } else {
+            return cuenta;
+        }
+    }
+
+    public List<Cuenta> mostrarCuentas(long dni) {
+        List<Cuenta> cuentasEncontradas = new ArrayList<>();
+        CuentaDao cuentaDao = new CuentaDao();
+
+        try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
+            String linea;
+            while ((linea = lector.readLine()) != null) {
+                String[] campos = linea.split(",");
+                if (Long.parseLong(campos[6]) == dni) {
+                    cuentasEncontradas.add(cuentaDao.parseCuentaToObjet(campos));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return cuentasEncontradas;
+    }
+
+    public List<Cuenta> mostrarTodasLasCuentas() {
+        List<Cuenta> cuentas = new ArrayList<>();
+        CuentaDao cuentaDao = new CuentaDao();
+
+        try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
+            String linea;
+            while ((linea = lector.readLine()) != null) {
+                String[] campos = linea.split(",");
+                cuentas.add(cuentaDao.parseCuentaToObjet(campos));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return cuentas;
     }
 
 }

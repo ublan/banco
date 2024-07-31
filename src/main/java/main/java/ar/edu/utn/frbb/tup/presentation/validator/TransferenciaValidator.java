@@ -25,9 +25,6 @@ public class TransferenciaValidator {
             throw new IllegalArgumentException("La moneda no puede ser nula");
         }
 
-        if (!transferenciaDto.getMoneda().equals(TipoMoneda.USD) && !transferenciaDto.getMoneda().equals(TipoMoneda.ARS)) {
-            throw new IllegalArgumentException("La moneda no es válida");
-        }
     }
 }
 

@@ -7,6 +7,7 @@ import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
 public class Transferencia {
 
     private LocalDate fecha;
+    private String tipo;
     private long cuentaOrigen;
     private long cuentaDestino;
     private double monto;
@@ -22,6 +23,10 @@ public class Transferencia {
         this.moneda = TipoMoneda.fromString(transferenciaDto.getMoneda().toString());
     }
 
+    public Transferencia() {
+
+    }
+
     public LocalDate getFecha() {
         return fecha;
     }
@@ -30,6 +35,13 @@ public class Transferencia {
         this.fecha = fecha;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
     public long getCuentaOrigen() {
         return cuentaOrigen;
     }

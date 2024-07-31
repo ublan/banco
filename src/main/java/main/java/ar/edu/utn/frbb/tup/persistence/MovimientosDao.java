@@ -1,7 +1,10 @@
 package main.java.ar.edu.utn.frbb.tup.persistence;
 
+import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
 import main.java.ar.edu.utn.frbb.tup.model.Movimiento;
 import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.*;
@@ -33,17 +36,6 @@ public class MovimientosDao {
         } catch (IOException ex) {
             System.err.println("Error al escribir en el archivo: " + ex.getMessage());
         }
-    }
-
-    public Movimiento cuentaPorCBU(long cbu) {
-        List<Movimiento> movimientos = leerMovimientosDeArchivo(NOMBRE_ARCHIVO_MOVIMIENTOS);
-
-        for (Movimiento movimiento : movimientos) {
-            if (movimiento.getCBU() == cbu) {
-                return movimiento;
-            }
-        }
-        return null;
     }
 
     public List<Movimiento> obtenerOperacionesPorCBU(long cbu) {
@@ -91,6 +83,38 @@ public class MovimientosDao {
         }
         return movimientos;
     }
+
+    public void borrarMovimiento(long CBU) {
+        List<String> movimientosStr = new ArrayList<>();
+
+        try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO_MOVIMIENTOS))) {
+            String linea = lector.readLine();
+            movimientosStr.add(linea);
+            while ((linea = lector.readLine()) != null) {
+                String[] campos = linea.split(",");
+                if (Long.parseLong(campos[0]) != CBU) {
+                    movimientosStr.add(linea);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("No se pudo acceder a la base de datos");
+        }
+
+        if (!movimientosStr.isEmpty()) {
+            try (BufferedWriter escritor = new BufferedWriter(new FileWriter(NOMBRE_ARCHIVO_MOVIMIENTOS))) {
+                for (String movimientoStr : movimientosStr) {
+                    escritor.write(movimientoStr);
+                    escritor.newLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("No se pudo escribir en el archivo");
+            }
+        } 
+    }
+
+
 }
 
 

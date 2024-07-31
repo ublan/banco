@@ -1,14 +1,16 @@
 package main.java.ar.edu.utn.frbb.tup.service.control;
 
-import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.MovimientosDto;
+
+import main.java.ar.edu.utn.frbb.tup.exception.CuentaNoEncontradaException;
+import main.java.ar.edu.utn.frbb.tup.exception.CuentaSinSaldoException;
+import main.java.ar.edu.utn.frbb.tup.exception.MomivientosVaciosException;
+import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
 import main.java.ar.edu.utn.frbb.tup.model.Movimiento;
+import main.java.ar.edu.utn.frbb.tup.persistence.CuentaDao;
 import main.java.ar.edu.utn.frbb.tup.persistence.MovimientosDao;
-import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos.Deposito;
-import main.java.ar.edu.utn.frbb.tup.service.operaciones.ManejoMovimientos.Retiro;
-import main.java.ar.edu.utn.frbb.tup.presentation.validator.MovimientosValidator;
 import main.java.ar.edu.utn.frbb.tup.model.TipoOperacion;
 
-
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,41 +23,58 @@ public class MovimientoService {
     private MovimientosDao movimientosDao;
 
     @Autowired
-    private MovimientosValidator movimientosValidator;
+    private CuentaDao cuentaDao;
 
-    @Autowired
-    private Deposito deposito;
+    public void realizarDeposito(long cbu, double monto) throws CuentaNoEncontradaException{
 
-    @Autowired
-    private Retiro retiro;
+        Cuenta cuenta = cuentaDao.obtenerCuentaPorCBU(cbu);
+        if (cuenta != null) {
+            double nuevoBalance = cuenta.getBalance() + monto;
+            cuentaDao.actualizarBalanceCuenta(cbu, nuevoBalance);
+        }else {
+            throw new CuentaNoEncontradaException("El CBU no existe");
+        }
 
+        Movimiento movimiento = creaMovimiento(cbu, TipoOperacion.DEPOSITO, monto);
 
-    public void realizarDeposito(long cbu, double monto, String moneda) {
-        MovimientosDto movimientosDto = new MovimientosDto();
-        movimientosDto.setCBU(cbu);
-        movimientosDto.setMonto(monto);
-        movimientosDto.setTipoOperacion(TipoOperacion.DEPOSITO);
-
-        movimientosValidator.validarDeposito(movimientosDto);
-        deposito.realizarDeposito(cbu, monto, moneda);
+        movimientosDao.guardarMovimiento(movimiento);
     }
 
-    public void realizarRetiro(long cbu, double monto, String moneda) {
-        MovimientosDto movimientosDto = new MovimientosDto();
-        movimientosDto.setCBU(cbu);
-        movimientosDto.setMonto(monto);
-        movimientosDto.setTipoOperacion(TipoOperacion.RETIRO);
+    public void realizarRetiro(long cbu, double monto) throws CuentaNoEncontradaException, CuentaSinSaldoException {
+        Cuenta cuenta = cuentaDao.obtenerCuentaPorCBU(cbu);
+        if (cuenta == null) {
+            throw new CuentaNoEncontradaException("Cuenta no encontrada");
+        }
+        if (cuenta.getBalance() < monto) {
+            throw new CuentaSinSaldoException("Saldo insuficiente");
+        }
 
-        movimientosValidator.validarRetiro(movimientosDto);
-        retiro.realizarRetiro(cbu, monto, moneda);
+        Movimiento movimiento = creaMovimiento(cbu, TipoOperacion.RETIRO, monto);
+
+        movimientosDao.guardarMovimiento(movimiento);
+
+        double nuevoBalance = cuenta.getBalance() - monto;
+        cuentaDao.actualizarBalanceCuenta(cbu, nuevoBalance);
     }
 
-    public List<Movimiento> obtenerOperacionesPorCBU(long cbu) {
-        return movimientosDao.obtenerOperacionesPorCBU(cbu);
+    public List<Movimiento> obtenerOperacionesPorCBU(long cbu) throws MomivientosVaciosException {
+
+        List<Movimiento> movimientos =  movimientosDao.obtenerOperacionesPorCBU(cbu);
+        if (movimientos.isEmpty()) {
+            throw new MomivientosVaciosException("No se encontraron movimientos");  
+        }
+        return movimientos;
     }
 
-    public Movimiento cuentaPorCBU(long cbu) {
-        return movimientosDao.cuentaPorCBU(cbu);
+    private static Movimiento creaMovimiento( long cbu, TipoOperacion tipoOperacion, double monto) {
+
+        Movimiento movimiento = new Movimiento();
+        movimiento.setCBU(cbu);
+        movimiento.setFechaOperacion(LocalDate.now());
+        movimiento.setTipoOperacion(tipoOperacion);
+        movimiento.setMonto(monto);
+        return movimiento;
     }
+
 }
 
