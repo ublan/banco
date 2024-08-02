@@ -38,10 +38,9 @@ public class ClienteController {
     }
 
     @PutMapping("/{dni}")
-    public ResponseEntity<String> modificarCliente(@PathVariable String dni, @RequestBody ClienteDto clientedto) throws ClienteNoEncontradoException {
+    public ResponseEntity<Cliente> modificarCliente(@PathVariable long dni, @RequestBody ClienteDto clientedto) throws ClienteNoEncontradoException {
         clienteValidator.validarCliente(clientedto);
-        clienteService.modificarCliente(clientedto);
-        return new ResponseEntity<>("Cliente modificado exitosamente.", HttpStatus.OK);
+        return new ResponseEntity<>(clienteService.modificarCliente(clientedto), HttpStatus.OK);
     }
 
     @GetMapping("/{dni}")

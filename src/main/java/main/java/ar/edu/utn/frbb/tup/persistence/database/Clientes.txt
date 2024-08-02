@@ -1,1 +1,4 @@
 dni,nombre,apellido,direccion,fechaNacimiento,tipoPersona,banco,fechaAlta
+44556477,URIELL,Poncho,Viamonte,1990-11-10,PERSONA_FISICA,ruben,2024-08-02
+44556427,Edgar,Poncho,Viamonte,2001-08-21,PERSONA_FISICA,MANOLO,2024-08-02
+44556417,Edgar,Poncho,Viamonte,2001-08-21,PERSONA_FISICA,MANOLO,2024-08-02

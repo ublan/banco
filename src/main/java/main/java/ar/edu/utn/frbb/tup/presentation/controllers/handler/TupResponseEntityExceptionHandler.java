@@ -17,7 +17,7 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
     @ExceptionHandler(value
             = {TipoCuentaAlreadyExistsException.class, IllegalArgumentException.class, TipoMonedasInvalidasException.class, 
                 CuentaSinSaldoException.class, MomivientosVaciosException.class, ClienteAlreadyExistsException.class, TipoMonedasInvalidasException.class})
-    protected ResponseEntity<Object> handleMateriaNotFound(
+    protected ResponseEntity<Object> handleBadRequest( 
             Exception ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
@@ -29,8 +29,8 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 
     @ExceptionHandler(value
             = {ClienteNoEncontradoException.class, CuentaNoEncontradaException.class})
-    protected ResponseEntity<Object> handleConflict(
-            RuntimeException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleMateriaNotFound(
+            Exception ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();
         CustomApiError error = new CustomApiError();
         error.setErrorCode(404);
@@ -38,7 +38,6 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
         return handleExceptionInternal(ex, error,
                 new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
-
 
 
     @Override

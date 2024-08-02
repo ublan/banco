@@ -25,7 +25,7 @@ public class MovimientoService {
     @Autowired
     private CuentaDao cuentaDao;
 
-    public void realizarDeposito(long cbu, double monto) throws CuentaNoEncontradaException{
+    public Movimiento realizarDeposito(long cbu, double monto) throws CuentaNoEncontradaException{
 
         Cuenta cuenta = cuentaDao.obtenerCuentaPorCBU(cbu);
         if (cuenta != null) {
@@ -38,9 +38,11 @@ public class MovimientoService {
         Movimiento movimiento = creaMovimiento(cbu, TipoOperacion.DEPOSITO, monto);
 
         movimientosDao.guardarMovimiento(movimiento);
+
+        return movimiento;
     }
 
-    public void realizarRetiro(long cbu, double monto) throws CuentaNoEncontradaException, CuentaSinSaldoException {
+    public Movimiento realizarRetiro(long cbu, double monto) throws CuentaNoEncontradaException, CuentaSinSaldoException {
         Cuenta cuenta = cuentaDao.obtenerCuentaPorCBU(cbu);
         if (cuenta == null) {
             throw new CuentaNoEncontradaException("Cuenta no encontrada");
@@ -55,6 +57,8 @@ public class MovimientoService {
 
         double nuevoBalance = cuenta.getBalance() - monto;
         cuentaDao.actualizarBalanceCuenta(cbu, nuevoBalance);
+
+        return movimiento;
     }
 
     public List<Movimiento> obtenerOperacionesPorCBU(long cbu) throws MomivientosVaciosException {

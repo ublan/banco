@@ -5,7 +5,7 @@ package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
 public class CuentaDto {
     private String nombre;
-    private long dniTitular;
+    private String dniTitular;
     private String tipoCuenta;
     private String tipoMoneda;
 
@@ -18,11 +18,11 @@ public class CuentaDto {
         this.nombre = nombre;
     }
 
-    public long getDniTitular() {
+    public String getDniTitular() {
         return dniTitular;
     }
 
-    public void setDniTitular(long dniTitular) {
+    public void setDniTitular(String dniTitular) {
         this.dniTitular = dniTitular;
     }
 

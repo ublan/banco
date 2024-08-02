@@ -159,7 +159,7 @@ public class CuentaDao {
         }
     }
 
-    public List<Cuenta> mostrarCuentas(long dni) {
+    public List<Cuenta> obtonerCuentasDelCliente(long dni) {
         List<Cuenta> cuentasEncontradas = new ArrayList<>();
         CuentaDao cuentaDao = new CuentaDao();
 
@@ -183,7 +183,7 @@ public class CuentaDao {
         CuentaDao cuentaDao = new CuentaDao();
 
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
-            String linea;
+            String linea = lector.readLine();
             while ((linea = lector.readLine()) != null) {
                 String[] campos = linea.split(",");
                 cuentas.add(cuentaDao.parseCuentaToObjet(campos));

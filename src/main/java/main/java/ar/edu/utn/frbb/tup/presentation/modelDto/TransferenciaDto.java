@@ -1,34 +1,21 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 
-import java.time.LocalDate;
-
-import main.java.ar.edu.utn.frbb.tup.model.TipoMoneda;
-
 public class TransferenciaDto {
 
-    private LocalDate fecha;
-    private String tipo;
-    private long cuentaOrigen;
+    private String tipoTransferencia;
+    private long cuentaOrigen; //Arregar a string y en validator tambien
     private long cuentaDestino;
     private double monto;
     private String descripcionBreve;
-    private TipoMoneda moneda;
+    private String moneda;
 
-    // Getters y setters
-    public LocalDate getFecha() {
-        return fecha;
+
+    public String getTipoTransferencia() {
+        return tipoTransferencia;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoTransferencia(String tipoTransferencia) {
+        this.tipoTransferencia = tipoTransferencia;
     }
 
     public long getCuentaOrigen() {
@@ -63,11 +50,11 @@ public class TransferenciaDto {
         this.monto = monto;
     }
 
-    public TipoMoneda getMoneda() {
+    public String getMoneda() {
         return moneda;
     }
 
-    public void setMoneda(TipoMoneda moneda) {
+    public void setMoneda(String moneda) {
         this.moneda = moneda;
     }
 

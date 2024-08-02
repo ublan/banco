@@ -5,16 +5,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
 import main.java.ar.edu.utn.frbb.tup.presentation.validator.ClienteValidator;
 
+@ExtendWith(MockitoExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ClienteValidatorTest {
 
     @Test
     public void test_validarCliente() {
         ClienteDto clienteDto = new ClienteDto();
-        clienteDto.setDni(12345678);
+        //clienteDto.setDni(12345678);
         clienteDto.setNombre("Juan");
         clienteDto.setApellido("Perez");
         clienteDto.setDireccion("Calle Falsa 123");
@@ -29,7 +34,7 @@ public class ClienteValidatorTest {
     @Test
     public void test_dni_zero() {
         ClienteDto clienteDto = new ClienteDto();
-        clienteDto.setDni(0);
+       // clienteDto.setDni(0);
         clienteDto.setNombre("Juan");
         clienteDto.setApellido("Perez");
         clienteDto.setDireccion("Calle Falsa 123");

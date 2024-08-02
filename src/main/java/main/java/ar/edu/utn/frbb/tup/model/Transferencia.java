@@ -1,13 +1,14 @@
 package main.java.ar.edu.utn.frbb.tup.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
 
 public class Transferencia {
 
     private LocalDate fecha;
-    private String tipo;
+    private TipoTransferencia tipoTransferencia;
     private long cuentaOrigen;
     private long cuentaDestino;
     private double monto;
@@ -15,7 +16,8 @@ public class Transferencia {
     private TipoMoneda moneda;
     
     public Transferencia(TransferenciaDto transferenciaDto) {
-        this.fecha = transferenciaDto.getFecha();
+        this.fecha = LocalDate.now();
+        this.tipoTransferencia = TipoTransferencia.fromString(transferenciaDto.getTipoTransferencia().toString());
         this.cuentaOrigen = transferenciaDto.getCuentaOrigen();
         this.cuentaDestino = transferenciaDto.getCuentaDestino();
         this.monto = transferenciaDto.getMonto();
@@ -31,16 +33,16 @@ public class Transferencia {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+    public void setFecha(LocalDate localDate) {
+        this.fecha = localDate;
     }
 
-    public String getTipo() {
-        return tipo;
+    public TipoTransferencia getTipoTransferencia() {
+        return tipoTransferencia;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setTipoTransferencia(TipoTransferencia tipoTransferencia) {
+        this.tipoTransferencia = tipoTransferencia;
     }
     public long getCuentaOrigen() {
         return cuentaOrigen;

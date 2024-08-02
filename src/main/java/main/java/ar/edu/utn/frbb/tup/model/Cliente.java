@@ -13,7 +13,7 @@ public class Cliente extends Persona {
     public Cliente(ClienteDto clienteDto) {
 
         super(
-            clienteDto.getDni(),
+            Long.parseLong(clienteDto.getDni()),
             clienteDto.getNombre(), 
             clienteDto.getApellido(), 
             clienteDto.getDireccion(), 

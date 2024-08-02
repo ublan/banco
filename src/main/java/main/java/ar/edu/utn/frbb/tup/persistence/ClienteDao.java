@@ -128,8 +128,9 @@ public class ClienteDao {
         boolean clienteEncontrado = false;
 
         try (BufferedReader lector = new BufferedReader(new FileReader(NOMBRE_ARCHIVO))) {
-            String linea;
-            while ((linea = lector.readLine()) != null) {
+            String linea = lector.readLine(); 
+            nuevosDatos.add(linea);         
+            while ((linea = lector.readLine()) != null) {               
                 String[] campos = linea.split(",");
                 if (Long.parseLong(campos[0]) == cliente.getDni()) {
                     clienteEncontrado = true;
@@ -140,8 +141,10 @@ public class ClienteDao {
                     campos[5] = cliente.getTipoPersona().toString();
                     campos[6] = cliente.getBanco();
                     campos[7] = cliente.getFechaAlta().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    nuevosDatos.add(String.join(",", campos));
+                } else {
+                    nuevosDatos.add(linea);
                 }
-                nuevosDatos.add(String.join(",", campos));
             }
         } catch (IOException e) {
             e.printStackTrace();

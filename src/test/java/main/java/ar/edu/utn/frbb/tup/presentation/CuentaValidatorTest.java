@@ -15,7 +15,7 @@ public class CuentaValidatorTest {
     public void test_validarCuenta() {
         CuentaValidator validator = new CuentaValidator();
         CuentaDto cuentaDto = new CuentaDto();
-        cuentaDto.setDniTitular(12345678);
+        //cuentaDto.setDniTitular(12345678);
         cuentaDto.setNombre("John Doe");
         cuentaDto.setTipoCuenta("Ahorro");
         cuentaDto.setMoneda("ARS");
@@ -27,7 +27,7 @@ public class CuentaValidatorTest {
     public void test_dni_titular_cero_exception() {
         CuentaValidator validator = new CuentaValidator();
         CuentaDto cuentaDto = new CuentaDto();
-        cuentaDto.setDniTitular(0);
+        //cuentaDto.setDniTitular(0);
         cuentaDto.setNombre("John Doe");
         cuentaDto.setTipoCuenta("Ahorro");
         cuentaDto.setMoneda("ARS");

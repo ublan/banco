@@ -56,7 +56,7 @@ public class CuentaService {
         if (clienteExistente == null) {
             throw new ClienteNoEncontradoException("El titular de la cuenta no existe");
         }
-        List<Cuenta> cuentas = cuentaDao.mostrarCuentas(dni);
+        List<Cuenta> cuentas = cuentaDao.obtonerCuentasDelCliente(dni);
         if (cuentas.isEmpty()) {
             throw new  CuentaNoEncontradaException("No se encontro el cliente con dni: " + dni); 
         }

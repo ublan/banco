@@ -11,17 +11,14 @@ import main.java.ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import main.java.ar.edu.utn.frbb.tup.persistence.CuentaDao;
 import main.java.ar.edu.utn.frbb.tup.persistence.TransferenciaDao;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
-import main.java.ar.edu.utn.frbb.tup.presentation.validator.TransferenciaValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class TransferenciaService {
-
-    @Autowired
-    private TransferenciaValidator transferenciaValidator;
 
     @Autowired
     private BanelcoService banelcoService;
@@ -38,19 +35,22 @@ public class TransferenciaService {
 
     public Transferencia realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaNoEncontradaException, CuentaSinSaldoException, TipoMonedasInvalidasException{
         Transferencia transferencia = new Transferencia(transferenciaDto);
-        transferenciaValidator.validarTransferencia(transferenciaDto);
 
         Cuenta cuentaOrigen = cuentaDao.obtenerCuentaPorCBU(transferenciaDto.getCuentaOrigen());
         Cuenta cuentaDestino = cuentaDao.obtenerCuentaPorCBU(transferenciaDto.getCuentaDestino());
 
-        if (cuentaOrigen == null || cuentaDestino == null) {
-            throw new CuentaNoEncontradaException("Una de las cuentas no existe");
+        if (cuentaOrigen == null) {
+            throw new CuentaNoEncontradaException("La cuenta origen no existe");
+        }
+
+        if (cuentaDestino == null) {
+            throw new CuentaNoEncontradaException("La cuenta destino no existe");
         }
 
         Cliente clienteOrigen = clienteDao.findByDni(cuentaOrigen.getDniTitular());
         Cliente clienteDestino = clienteDao.findByDni(cuentaDestino.getDniTitular());
 
-        if (cuentaOrigen.getBalance() <= transferencia.getMonto()) {
+        if (cuentaOrigen.getBalance() < transferencia.getMonto()) {
             throw new CuentaSinSaldoException("Fondos insuficientes en la cuenta origen");
         }
 
@@ -64,8 +64,8 @@ public class TransferenciaService {
             }
         }
         
-        
         actualizarSaldos(cuentaOrigen, cuentaDestino, transferencia);
+
         transferenciaDao.guardarTransferencia(transferencia);
 
         return transferencia;

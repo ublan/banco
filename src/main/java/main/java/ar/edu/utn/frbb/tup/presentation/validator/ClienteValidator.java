@@ -1,5 +1,8 @@
 package main.java.ar.edu.utn.frbb.tup.presentation.validator;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import org.springframework.stereotype.Component;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
 
@@ -8,11 +11,13 @@ public class ClienteValidator {
 
     public void validarCliente(ClienteDto clientedto) {
 
-        if (clientedto.getDni() == 0) {
+        validarDNI(clientedto.getDni());
+
+        if (Long.parseLong(clientedto.getDni()) == 0) {
             throw new IllegalArgumentException("El dni del titular de la cuenta es obligatorio");
         }
     
-        if (clientedto.getDni() < 10000000 || clientedto.getDni() > 99999999) {
+        if (Long.parseLong(clientedto.getDni().toString()) < 10000000 || Long.parseLong(clientedto.getDni().toString()) > 99999999) {
             throw new IllegalArgumentException("El dni del titular de la cuenta debe ser de 8 digitos");
         }
 
@@ -36,11 +41,29 @@ public class ClienteValidator {
             throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
         }
 
+        validarFechaNacimiento(clientedto.getFechaNacimiento());
+
         if (clientedto.getTipoPersona() == null) {
             throw new IllegalArgumentException("El tipo de persona no puede ser nulo");
             
         }
 
+    }
+
+    private void validarFechaNacimiento(String fechaNacimiento) {
+        try {
+            LocalDate.parse(fechaNacimiento);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("La fecha de nacimiento no tiene el formato correcto");
+        }
+    }
+
+    private void validarDNI(String dni) {
+        try {
+            Long.parseLong(dni);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("El dni no tiene el formato correcto");
+        }
     }
 
 }

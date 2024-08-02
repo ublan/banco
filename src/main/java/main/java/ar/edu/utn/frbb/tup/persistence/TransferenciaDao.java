@@ -1,16 +1,22 @@
 package main.java.ar.edu.utn.frbb.tup.persistence;
 
 import org.springframework.stereotype.Repository;
-import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
+
+import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
+import main.java.ar.edu.utn.frbb.tup.model.TipoCuenta;
 import main.java.ar.edu.utn.frbb.tup.model.TipoMoneda;
+import main.java.ar.edu.utn.frbb.tup.model.TipoTransferencia;
 import main.java.ar.edu.utn.frbb.tup.model.Transferencia;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,26 +29,12 @@ public class TransferenciaDao {
         List<Transferencia> transacciones = new ArrayList<>();
         try (BufferedReader lector = new BufferedReader(new FileReader(ARCHIVO_TRANSFERENCIAS))) {
             String linea;
-            lector.readLine(); // Leer la línea de encabezado, si la hay
+            lector.readLine();
             while ((linea = lector.readLine()) != null) {
-                String[] datos = linea.split(",");
-                long cuentaOrigen = Long.parseLong(datos[0]);
-                long cuentaDestino = Long.parseLong(datos[1]);
-                LocalDate fecha = LocalDate.parse(datos[2]);
-                double monto = Double.parseDouble(datos[3]);
-                String tipo = datos[4];
-                TipoMoneda moneda = TipoMoneda.fromString(datos[5]);
-                String descripcionBreve = tipo.equals("CREDITO") ? "Transferencia entrante" : "Transferencia saliente";
+                String[] datos = linea.split(","); 
 
-                if (cuentaOrigen == cbu || cuentaDestino == cbu) {
-                    Transferencia transaccion = new Transferencia();
-                    transaccion.setFecha(fecha);
-                    transaccion.setTipo(tipo);
-                    transaccion.setCuentaOrigen(cuentaOrigen);
-                    transaccion.setCuentaDestino(cuentaDestino);
-                    transaccion.setMonto(monto);
-                    transaccion.setMoneda(moneda);
-                    transaccion.setDescripcionBreve(descripcionBreve);
+                if (Long.parseLong(datos[0]) == cbu || Long.parseLong(datos[1]) == cbu) {
+                    Transferencia transaccion = parseTrnsferenciaToObjet(datos);                   
                     transacciones.add(transaccion);
                 }
             }
@@ -54,15 +46,22 @@ public class TransferenciaDao {
     }
 
     public void guardarTransferencia(Transferencia transferencia) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_TRANSFERENCIAS, true))) {
+        boolean archivoNuevo = !(new File(ARCHIVO_TRANSFERENCIAS).exists());
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(ARCHIVO_TRANSFERENCIAS, true))) {
+            if (archivoNuevo) {
+                escritor.write("cuentaOrigen,cuentaDestino,fecha,monto,moneda,tipoTransferencia,descripcionBreve");
+                escritor.newLine();
+            }
             String transf = transferencia.getCuentaOrigen() + "," +
                             transferencia.getCuentaDestino() + "," +
                             transferencia.getFecha() + "," +
                             transferencia.getMonto() + "," +
-                            transferencia.getTipo() + "," +
-                            transferencia.getMoneda();
-            writer.write(transf);
-            writer.newLine();
+                            transferencia.getMoneda() + "," +
+                            transferencia.getTipoTransferencia() + "," +
+                            transferencia.getDescripcionBreve();
+
+            escritor.write(transf);
+            escritor.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,6 +95,19 @@ public class TransferenciaDao {
                 throw new RuntimeException("No se pudo escribir en el archivo");
             }
         } 
+    }
+
+    public Transferencia parseTrnsferenciaToObjet(String[] datos){
+        Transferencia Transferencia = new Transferencia();
+        Transferencia.setCuentaOrigen(Long.parseLong(datos[0]));
+        Transferencia.setCuentaDestino(Long.parseLong(datos[1]));
+        Transferencia.setFecha(LocalDate.parse(datos[2]));
+        Transferencia.setMonto(Double.parseDouble(datos[3]));
+        Transferencia.setMoneda(TipoMoneda.valueOf(datos[4]));
+        Transferencia.setTipoTransferencia(TipoTransferencia.valueOf(datos[5]));
+        Transferencia.setDescripcionBreve(datos[6]);
+
+        return Transferencia;
     }
 }
 

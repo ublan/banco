@@ -21,7 +21,6 @@ public class ClienteService {
     @Autowired
     private ClienteDao clienteDao;
 
-
     @Autowired
     private CuentaDao cuentaDao;
 
@@ -34,13 +33,10 @@ public class ClienteService {
 
     public Cliente darDeAltaCliente(ClienteDto clientedto) throws ClienteAlreadyExistsException {
         Cliente cliente = new Cliente(clientedto);
-
         Cliente clienteExistente = clienteDao.findByDni(cliente.getDni());
-
         if (clienteExistente != null) {
             throw new ClienteAlreadyExistsException("Ya existe un cliente con DNI " + cliente.getDni());
         }
-
         clienteDao.crearCliente(cliente);
         return cliente;
     }
@@ -53,7 +49,7 @@ public class ClienteService {
             throw new ClienteNoEncontradoException("No se encontro el cliente con ese dni");   
         }
 
-        List<Cuenta> cuentas = cuentaDao.mostrarCuentas(dni);
+        List<Cuenta> cuentas = cuentaDao.obtonerCuentasDelCliente(dni);
         for (Cuenta cuenta : cuentas) {
             cuentaDao.borrarCuenta(cuenta.getCBU());
         }
@@ -63,9 +59,11 @@ public class ClienteService {
         return cliente;
     }
 
-    public void modificarCliente(ClienteDto clientedto) throws ClienteNoEncontradoException {
+    public Cliente modificarCliente(ClienteDto clientedto) throws ClienteNoEncontradoException {
         Cliente cliente = new Cliente(clientedto);
         clienteDao.modificarCliente(cliente);
+
+        return cliente;
     }
 
     public Cliente mostrarCliente(long dni) throws ClienteNoEncontradoException {
