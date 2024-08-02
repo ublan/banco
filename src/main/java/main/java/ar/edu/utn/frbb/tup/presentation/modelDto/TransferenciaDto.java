@@ -3,8 +3,8 @@ package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 public class TransferenciaDto {
 
     private String tipoTransferencia;
-    private long cuentaOrigen; //Arregar a string y en validator tambien
-    private long cuentaDestino;
+    private String cuentaOrigen; //Arregar a string y en validator tambien
+    private String cuentaDestino;
     private double monto;
     private String descripcionBreve;
     private String moneda;
@@ -18,19 +18,19 @@ public class TransferenciaDto {
         this.tipoTransferencia = tipoTransferencia;
     }
 
-    public long getCuentaOrigen() {
+    public String getCuentaOrigen() {
         return cuentaOrigen;
     }
 
-    public void setCuentaOrigen(long cuentaOrigen) {
+    public void setCuentaOrigen(String cuentaOrigen) {
         this.cuentaOrigen = cuentaOrigen;
     }
 
-    public long getCuentaDestino() {
+    public String getCuentaDestino() {
         return cuentaDestino;
     }
 
-    public void setCuentaDestino(long cuentaDestino) {
+    public void setCuentaDestino(String cuentaDestino) {
         this.cuentaDestino = cuentaDestino;
     }
 

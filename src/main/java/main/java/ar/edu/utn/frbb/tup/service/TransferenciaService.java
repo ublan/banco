@@ -36,8 +36,8 @@ public class TransferenciaService {
     public Transferencia realizarTransferencia(TransferenciaDto transferenciaDto) throws CuentaNoEncontradaException, CuentaSinSaldoException, TipoMonedasInvalidasException{
         Transferencia transferencia = new Transferencia(transferenciaDto);
 
-        Cuenta cuentaOrigen = cuentaDao.obtenerCuentaPorCBU(transferenciaDto.getCuentaOrigen());
-        Cuenta cuentaDestino = cuentaDao.obtenerCuentaPorCBU(transferenciaDto.getCuentaDestino());
+        Cuenta cuentaOrigen = cuentaDao.obtenerCuentaPorCBU(Long.parseLong(transferenciaDto.getCuentaOrigen()));
+        Cuenta cuentaDestino = cuentaDao.obtenerCuentaPorCBU(Long.parseLong(transferenciaDto.getCuentaDestino()));
 
         if (cuentaOrigen == null) {
             throw new CuentaNoEncontradaException("La cuenta origen no existe");

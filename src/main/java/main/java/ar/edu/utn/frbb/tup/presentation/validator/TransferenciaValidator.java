@@ -7,17 +7,20 @@ import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
 @Component
 public class TransferenciaValidator {
 
-
     public void validarTransferencia(TransferenciaDto transferenciaDto) {
+
+        validarCBUs(transferenciaDto.getCuentaOrigen());
+        validarCBUs(transferenciaDto.getCuentaDestino());
+
         if (transferenciaDto.getCuentaOrigen() == transferenciaDto.getCuentaDestino()) {
             throw new IllegalArgumentException("El CBU destino no puede ser el mismo que el CBU origen");
         }
 
-        if (transferenciaDto.getCuentaDestino() == 0) {
+        if (Long.parseLong(transferenciaDto.getCuentaDestino()) == 0) {
             throw new IllegalArgumentException("El CBU destino no puede ser nulo");
         }
 
-        if (transferenciaDto.getCuentaOrigen() == 0) {
+        if (Long.parseLong(transferenciaDto.getCuentaOrigen()) == 0) {
             throw new IllegalArgumentException("El CBU Origen no puede estar vacio");
         }
 
@@ -35,6 +38,14 @@ public class TransferenciaValidator {
 
         if (transferenciaDto.getDescripcionBreve() == null) {
             throw new IllegalArgumentException("La descripcion no puede estar vacia");
+        }
+    }
+
+    private void validarCBUs(String dni) {
+        try {
+            Long.parseLong(dni);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("El dni no tiene el formato correcto");
         }
     }
 }

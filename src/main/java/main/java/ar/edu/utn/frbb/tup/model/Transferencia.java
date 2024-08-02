@@ -18,8 +18,8 @@ public class Transferencia {
     public Transferencia(TransferenciaDto transferenciaDto) {
         this.fecha = LocalDate.now();
         this.tipoTransferencia = TipoTransferencia.fromString(transferenciaDto.getTipoTransferencia().toString());
-        this.cuentaOrigen = transferenciaDto.getCuentaOrigen();
-        this.cuentaDestino = transferenciaDto.getCuentaDestino();
+        this.cuentaOrigen = Long.parseLong(transferenciaDto.getCuentaOrigen());
+        this.cuentaDestino = Long.parseLong(transferenciaDto.getCuentaDestino());
         this.monto = transferenciaDto.getMonto();
         this.descripcionBreve = transferenciaDto.getDescripcionBreve();
         this.moneda = TipoMoneda.fromString(transferenciaDto.getMoneda().toString());
