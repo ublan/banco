@@ -3,7 +3,7 @@ package main.java.ar.edu.utn.frbb.tup.presentation.modelDto;
 public class TransferenciaDto {
 
     private String tipoTransferencia;
-    private String cuentaOrigen; //Arregar a string y en validator tambien
+    private String cuentaOrigen; 
     private String cuentaDestino;
     private double monto;
     private String descripcionBreve;

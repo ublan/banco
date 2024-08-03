@@ -28,12 +28,13 @@ public class MovimientoService {
     public Movimiento realizarDeposito(long cbu, double monto) throws CuentaNoEncontradaException{
 
         Cuenta cuenta = cuentaDao.obtenerCuentaPorCBU(cbu);
-        if (cuenta != null) {
-            double nuevoBalance = cuenta.getBalance() + monto;
-            cuentaDao.actualizarBalanceCuenta(cbu, nuevoBalance);
-        }else {
+
+        if (cuenta == null) {
             throw new CuentaNoEncontradaException("El CBU no existe");
         }
+        
+        double nuevoBalance = cuenta.getBalance() + monto;
+        cuentaDao.actualizarBalanceCuenta(cbu, nuevoBalance);
 
         Movimiento movimiento = creaMovimiento(cbu, TipoOperacion.DEPOSITO, monto);
 

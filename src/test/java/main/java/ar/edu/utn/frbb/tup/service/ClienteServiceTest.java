@@ -162,15 +162,14 @@ public class ClienteServiceTest {
 
 
     @Test
-    public void testMostrarTodosLosClientesNoEncontrado() throws ClienteNoEncontradoException { //Corrección de Test
-        List<Cliente> clientes = List.of(new Cliente(getClienteDto()));
+    public void testMostrarTodosLosClientesNoEncontrado() throws ClienteNoEncontradoException { 
+        List<Cliente> clientesVacio = List.of();
 
-        when(clienteDao.mostrarTodosLosClientes()).thenReturn(null);
-
-        verify(clienteDao, times(0)).mostrarTodosLosClientes();
+        when(clienteDao.mostrarTodosLosClientes()).thenReturn(clientesVacio);
 
         assertThrows(ClienteNoEncontradoException.class, () -> ClienteService.mostrarTodosLosClientes());
 
+        verify(clienteDao, times(1)).mostrarTodosLosClientes();
     }
 
     public ClienteDto getClienteDto() {
