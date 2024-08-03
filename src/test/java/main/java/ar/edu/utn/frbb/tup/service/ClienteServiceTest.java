@@ -18,8 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext.Empty;
-
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
@@ -174,8 +172,6 @@ public class ClienteServiceTest {
         assertThrows(ClienteNoEncontradoException.class, () -> ClienteService.mostrarTodosLosClientes());
 
     }
-
-
 
     public ClienteDto getClienteDto() {
         ClienteDto clientedto = new ClienteDto();
