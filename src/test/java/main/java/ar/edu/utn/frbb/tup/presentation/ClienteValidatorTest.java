@@ -1,49 +1,163 @@
 package main.java.ar.edu.utn.frbb.tup.presentation;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
 import main.java.ar.edu.utn.frbb.tup.presentation.validator.ClienteValidator;
 
-@ExtendWith(MockitoExtension.class)
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ClienteValidatorTest {
 
-    @Test
-    public void test_validarCliente() {
-        ClienteDto clienteDto = new ClienteDto();
-        //clienteDto.setDni(12345678);
-        clienteDto.setNombre("Juan");
-        clienteDto.setApellido("Perez");
-        clienteDto.setDireccion("Calle Falsa 123");
-        clienteDto.setBanco("Banco Nacion");
-        clienteDto.setFechaNacimiento("01/01/1980");
-        clienteDto.setTipoPersona("Fisica");
+    ClienteValidator clienteValidator;
 
-        ClienteValidator validator = new ClienteValidator();
-        assertDoesNotThrow(() -> validator.validarCliente(clienteDto));
+    @BeforeEach
+    public void setUp() {
+        clienteValidator = new ClienteValidator();
     }
 
     @Test
-    public void test_dni_zero() {
+    public void testClienteValidatorSuccess(){
         ClienteDto clienteDto = new ClienteDto();
-       // clienteDto.setDni(0);
+        clienteDto.setDni("12345678");
         clienteDto.setNombre("Juan");
-        clienteDto.setApellido("Perez");
+        clienteDto.setApellido("Peperino");
         clienteDto.setDireccion("Calle Falsa 123");
+        clienteDto.setFechaNacimiento("2001-01-01");
         clienteDto.setBanco("Banco Nacion");
-        clienteDto.setFechaNacimiento("01/01/1980");
-        clienteDto.setTipoPersona("Fisica");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
 
-        ClienteValidator validator = new ClienteValidator();
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> validator.validarCliente(clienteDto));
-        assertEquals("El dni del titular de la cuenta es obligatorio", exception.getMessage());
+        assertDoesNotThrow(() -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorErrorDniString(){
+        ClienteDto clienteDto = new ClienteDto();
+        clienteDto.setDni("A");
+        clienteDto.setNombre("Juan");
+        clienteDto.setApellido("Peperino");
+        clienteDto.setDireccion("Calle Falsa 123");
+        clienteDto.setFechaNacimiento("2001-01-01");
+        clienteDto.setBanco("Banco Nacion");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
+    
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorSinDni(){
+        ClienteDto clienteDto = new ClienteDto();
+        //clienteDto.setDni("12345678");
+        clienteDto.setNombre("Juan");
+        clienteDto.setApellido("Peperino");
+        clienteDto.setDireccion("Calle Falsa 123");
+        clienteDto.setFechaNacimiento("2001-01-01");
+        clienteDto.setBanco("Banco Nacion");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
+
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorDniMenoraCero(){
+        ClienteDto clienteDto = new ClienteDto();
+        clienteDto.setDni("-12345678");
+        clienteDto.setNombre("Juan");
+        clienteDto.setApellido("Peperino");
+        clienteDto.setDireccion("Calle Falsa 123");
+        clienteDto.setFechaNacimiento("2001-01-01");
+        clienteDto.setBanco("Banco Nacion");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
+    
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorSinNombre(){
+        ClienteDto clienteDto = new ClienteDto();
+        clienteDto.setDni("12345678");
+        clienteDto.setNombre("");
+        clienteDto.setApellido("Peperino");
+        clienteDto.setDireccion("Calle Falsa 123");
+        clienteDto.setFechaNacimiento("2001-01-01");
+        clienteDto.setBanco("Banco Nacion");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
+
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorSinApellido(){
+        ClienteDto clienteDto = new ClienteDto();
+        clienteDto.setDni("12345678");
+        clienteDto.setNombre("Juan");
+        clienteDto.setApellido("");
+        clienteDto.setDireccion("Calle Falsa 123");
+        clienteDto.setFechaNacimiento("2001-01-01");
+        clienteDto.setBanco("Banco Nacion");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
+
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorSinDireccion(){
+        ClienteDto clienteDto = new ClienteDto();
+        clienteDto.setDni("12345678");
+        clienteDto.setNombre("Juan");
+        clienteDto.setApellido("Peperino");
+        clienteDto.setDireccion("");
+        clienteDto.setFechaNacimiento("2001-01-01");
+        clienteDto.setBanco("Banco Nacion");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
+
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorSinFechaNacimiento(){
+        ClienteDto clienteDto = new ClienteDto();
+        clienteDto.setDni("12345678");
+        clienteDto.setNombre("Juan");
+        clienteDto.setApellido("Peperino");
+        clienteDto.setDireccion("Calle Falsa 123");
+        //clienteDto.setFechaNacimiento("");
+        clienteDto.setBanco("Banco Nacion");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
+
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorSinBanco(){
+        ClienteDto clienteDto = new ClienteDto();
+        clienteDto.setDni("12345678");
+        clienteDto.setNombre("Juan");
+        clienteDto.setApellido("Peperino");
+        clienteDto.setDireccion("Calle Falsa 123");
+        clienteDto.setFechaNacimiento("2001-01-01");
+        clienteDto.setBanco("");
+        clienteDto.setTipoPersona("PERSONA_FISICA");
+
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
+    }
+
+    @Test
+    public void testClienteValidatorSinTipoPersona(){
+        ClienteDto clienteDto = new ClienteDto();
+        clienteDto.setDni("12345678");
+        clienteDto.setNombre("Juan");
+        clienteDto.setApellido("Peperino");
+        clienteDto.setDireccion("Calle Falsa 123");
+        clienteDto.setFechaNacimiento("2001-01-01");
+        clienteDto.setBanco("Banco Nacion");
+        //clienteDto.setTipoPersona("PERSONA_FISICA");
+
+        assertThrows(IllegalArgumentException.class, () -> clienteValidator.validarCliente(clienteDto));
     }
 }

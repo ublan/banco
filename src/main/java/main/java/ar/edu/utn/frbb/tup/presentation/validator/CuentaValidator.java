@@ -13,6 +13,10 @@ public class CuentaValidator {
         if (Long.parseLong(cuentadto.getDniTitular()) == 0) {
             throw new IllegalArgumentException("El dni del titular de la cuenta es obligatorio");
         }
+
+        if (Integer.parseInt(cuentadto.getDniTitular()) < 0) {
+            throw new IllegalArgumentException("El dni del titular de la cuenta no puede ser negativo");
+        }
     
         if (Long.parseLong(cuentadto.getDniTitular().toString()) < 10000000 || Long.parseLong(cuentadto.getDniTitular().toString()) > 99999999) {
             throw new IllegalArgumentException("El dni del titular de la cuenta debe ser de 8 digitos");
