@@ -36,6 +36,5 @@ public class TransferenciaController {
         return new ResponseEntity<>(transferenciaService.realizarTransferencia(transferenciaDto), HttpStatus.OK);
     }
 
-
 }
 
