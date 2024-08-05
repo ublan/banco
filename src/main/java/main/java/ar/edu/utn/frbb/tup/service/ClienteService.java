@@ -1,6 +1,7 @@
 package main.java.ar.edu.utn.frbb.tup.service;
 
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
+import main.java.ar.edu.utn.frbb.tup.exception.ClienteMenorEdadException;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
 import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
@@ -31,11 +32,14 @@ public class ClienteService {
     private TransferenciaDao transferenciaDao;
 
 
-    public Cliente darDeAltaCliente(ClienteDto clientedto) throws ClienteAlreadyExistsException {
+    public Cliente darDeAltaCliente(ClienteDto clientedto) throws ClienteAlreadyExistsException, ClienteMenorEdadException {
         Cliente cliente = new Cliente(clientedto);
         Cliente clienteExistente = clienteDao.findByDni(cliente.getDni());
         if (clienteExistente != null) {
             throw new ClienteAlreadyExistsException("Ya existe un cliente con DNI " + cliente.getDni());
+        }
+        if (cliente.getEdad() < 18) {
+            throw new ClienteMenorEdadException("El cliente debe ser mayor de 18 anios");    
         }
         clienteDao.crearCliente(cliente);
         return cliente;

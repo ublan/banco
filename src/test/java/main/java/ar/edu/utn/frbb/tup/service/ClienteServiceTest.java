@@ -19,6 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
+import main.java.ar.edu.utn.frbb.tup.exception.ClienteMenorEdadException;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
 import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
@@ -54,7 +55,7 @@ public class ClienteServiceTest {
 
 
     @Test
-    public void testDarDeAltaClienteSuccess() throws ClienteAlreadyExistsException {
+    public void testDarDeAltaClienteSuccess() throws ClienteAlreadyExistsException , ClienteMenorEdadException {
         ClienteDto clienteDto = getClienteDto();
         Cliente cliente = new Cliente(clienteDto);
         

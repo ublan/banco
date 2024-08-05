@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteAlreadyExistsException;
+import main.java.ar.edu.utn.frbb.tup.exception.ClienteMenorEdadException;
 import main.java.ar.edu.utn.frbb.tup.exception.ClienteNoEncontradoException;
 import main.java.ar.edu.utn.frbb.tup.model.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class ClienteController {
     private ClienteValidator clienteValidator;
     
     @PostMapping
-    public ResponseEntity<Cliente> darDeAltaCliente(@RequestBody ClienteDto clientedto) throws ClienteAlreadyExistsException {
+    public ResponseEntity<Cliente> darDeAltaCliente(@RequestBody ClienteDto clientedto) throws ClienteAlreadyExistsException, ClienteMenorEdadException {
         clienteValidator.validarCliente(clientedto);
         return new ResponseEntity<>(clienteService.darDeAltaCliente(clientedto), HttpStatus.CREATED);
     }

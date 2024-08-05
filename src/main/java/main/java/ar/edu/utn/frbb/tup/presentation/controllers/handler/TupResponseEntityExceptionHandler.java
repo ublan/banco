@@ -16,7 +16,7 @@ public class TupResponseEntityExceptionHandler extends ResponseEntityExceptionHa
 
     @ExceptionHandler(value
             = {TipoCuentaAlreadyExistsException.class, IllegalArgumentException.class, TipoMonedasInvalidasException.class, 
-                CuentaSinSaldoException.class, MomivientosVaciosException.class, ClienteAlreadyExistsException.class, TipoMonedasInvalidasException.class})
+                CuentaSinSaldoException.class, MomivientosVaciosException.class, ClienteAlreadyExistsException.class, TipoMonedasInvalidasException.class, ClienteMenorEdadException.class})
     protected ResponseEntity<Object> handleBadRequest( 
             Exception ex, WebRequest request) {
         String exceptionMessage = ex.getMessage();

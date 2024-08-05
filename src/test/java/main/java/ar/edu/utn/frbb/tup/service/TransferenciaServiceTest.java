@@ -1,6 +1,8 @@
 package main.java.ar.edu.utn.frbb.tup.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
@@ -8,6 +10,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,12 +30,11 @@ import main.java.ar.edu.utn.frbb.tup.model.Cuenta;
 import main.java.ar.edu.utn.frbb.tup.model.TipoCuenta;
 import main.java.ar.edu.utn.frbb.tup.model.TipoMoneda;
 import main.java.ar.edu.utn.frbb.tup.model.TipoPersona;
+import main.java.ar.edu.utn.frbb.tup.model.TipoTransferencia;
 import main.java.ar.edu.utn.frbb.tup.model.Transferencia;
 import main.java.ar.edu.utn.frbb.tup.persistence.ClienteDao;
 import main.java.ar.edu.utn.frbb.tup.persistence.CuentaDao;
 import main.java.ar.edu.utn.frbb.tup.persistence.TransferenciaDao;
-import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
-import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.CuentaDto;
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.TransferenciaDto;
 
 @ExtendWith(MockitoExtension.class)
@@ -97,15 +100,127 @@ public class TransferenciaServiceTest {
         assertNotNull(transferencia);
     }
 
-    public Cuenta getCuenta() {
-        Cuenta cuenta = new Cuenta();
-        cuenta.setNombre("Uriel");
-        cuenta.setCBU(123456789);
-        cuenta.setBalance(2000);
-        cuenta.setDniTitular(12345678);
-        cuenta.setTipoCuenta(TipoCuenta.AHORRO);
-        cuenta.setMoneda(TipoMoneda.ARS);
-        return cuenta;
+    @Test
+    public void testTransferenciaCuentaNoEncontradaOrigen() throws CuentaNoEncontradaException, CuentaSinSaldoException, TipoMonedasInvalidasException {
+
+        Cuenta cuentaOrigen = new Cuenta();
+        cuentaOrigen.setCBU(123456789);
+        cuentaOrigen.setBalance(2000);
+        cuentaOrigen.setMoneda(TipoMoneda.ARS);
+        cuentaOrigen.setDniTitular(12345678);
+
+        Cuenta cuentaDestino = new Cuenta();
+        cuentaDestino.setCBU(987654321);
+        cuentaDestino.setBalance(500);
+        cuentaDestino.setMoneda(TipoMoneda.ARS);
+        cuentaDestino.setDniTitular(87654321);
+
+        when(cuentaDao.obtenerCuentaPorCBU(cuentaOrigen.getDniTitular())).thenReturn(null);
+        when(cuentaDao.obtenerCuentaPorCBU(cuentaDestino.getDniTitular())).thenReturn(cuentaDestino);
+
+        assertThrows(CuentaNoEncontradaException.class, () -> transferenciaService.realizarTransferencia(getTransferenciaDto()));
+
+        verify(cuentaDao,times(2)).obtenerCuentaPorCBU(any(Long.class));
+
+    }
+
+    @Test
+    public void testTransferenciaCuentaNoEncontradaDestino() throws CuentaNoEncontradaException, CuentaSinSaldoException, TipoMonedasInvalidasException {
+
+        Cuenta cuentaOrigen = new Cuenta();
+        cuentaOrigen.setCBU(123456789);
+        cuentaOrigen.setBalance(2000);
+        cuentaOrigen.setMoneda(TipoMoneda.ARS);
+        cuentaOrigen.setDniTitular(12345678);
+
+        Cuenta cuentaDestino = new Cuenta();
+        cuentaDestino.setCBU(987654321);
+        cuentaDestino.setBalance(500);
+        cuentaDestino.setMoneda(TipoMoneda.ARS);
+        cuentaDestino.setDniTitular(87654321);
+
+        when(cuentaDao.obtenerCuentaPorCBU(cuentaOrigen.getDniTitular())).thenReturn(cuentaOrigen);
+        when(cuentaDao.obtenerCuentaPorCBU(cuentaDestino.getDniTitular())).thenReturn(null);
+
+        assertThrows(CuentaNoEncontradaException.class, () -> transferenciaService.realizarTransferencia(getTransferenciaDto()));
+
+        verify(cuentaDao,times(2)).obtenerCuentaPorCBU(any(Long.class));
+    }
+
+    @Test
+    public void testTransferenciaCuentaSinSaldo() throws CuentaNoEncontradaException, CuentaSinSaldoException, TipoMonedasInvalidasException {
+        Cliente clienteOrigen = getCliente();
+        Cliente clienteDestino = getCliente();
+
+        Cuenta cuentaOrigen = new Cuenta();
+        cuentaOrigen.setCBU(123456789);
+        cuentaOrigen.setBalance(0);
+        cuentaOrigen.setMoneda(TipoMoneda.ARS);
+        cuentaOrigen.setDniTitular(12345678);
+
+        Cuenta cuentaDestino = new Cuenta();
+        cuentaDestino.setCBU(987654321);
+        cuentaDestino.setBalance(500);
+        cuentaDestino.setMoneda(TipoMoneda.ARS);
+        cuentaDestino.setDniTitular(87654321);
+
+        when(cuentaDao.obtenerCuentaPorCBU(cuentaOrigen.getDniTitular())).thenReturn(cuentaOrigen);
+        when(cuentaDao.obtenerCuentaPorCBU(cuentaDestino.getDniTitular())).thenReturn(cuentaDestino);
+
+        when(clienteDao.findByDni(cuentaOrigen.getDniTitular())).thenReturn(clienteOrigen);
+        when(clienteDao.findByDni(cuentaDestino.getDniTitular())).thenReturn(clienteDestino);
+
+        assertThrows(CuentaSinSaldoException.class, () -> transferenciaService.realizarTransferencia(getTransferenciaDto()));
+
+        verify(cuentaDao,times(2)).obtenerCuentaPorCBU(any(Long.class));
+        verify(clienteDao,times(2)).findByDni(any(Long.class));
+
+    }
+    
+
+    @Test
+    public void testTransferenciaTipoMonedasInvalidas() throws CuentaNoEncontradaException, CuentaSinSaldoException, TipoMonedasInvalidasException {
+
+        Cliente clienteOrigen = getCliente();
+        Cliente clienteDestino = getCliente();
+
+        Cuenta cuentaOrigen = new Cuenta();
+        cuentaOrigen.setCBU(123456789);
+        cuentaOrigen.setBalance(2000);
+        cuentaOrigen.setMoneda(TipoMoneda.USD);
+        cuentaOrigen.setDniTitular(12345678);
+
+        Cuenta cuentaDestino = new Cuenta();
+        cuentaDestino.setCBU(987654321);
+        cuentaDestino.setBalance(500);
+        cuentaDestino.setMoneda(TipoMoneda.ARS);
+        cuentaDestino.setDniTitular(87654321);
+
+        when(cuentaDao.obtenerCuentaPorCBU(cuentaOrigen.getDniTitular())).thenReturn(cuentaOrigen);
+        when(cuentaDao.obtenerCuentaPorCBU(cuentaDestino.getDniTitular())).thenReturn(cuentaDestino);
+
+        when(clienteDao.findByDni(cuentaOrigen.getDniTitular())).thenReturn(clienteOrigen);
+        when(clienteDao.findByDni(cuentaDestino.getDniTitular())).thenReturn(clienteDestino);
+
+        assertThrows(TipoMonedasInvalidasException.class, () -> transferenciaService.realizarTransferencia(getTransferenciaDto()));
+
+        verify(cuentaDao,times(2)).obtenerCuentaPorCBU(any(Long.class));
+        verify(clienteDao,times(2)).findByDni(any(Long.class));
+    }
+
+    @Test
+    public void testObtenerOperacionesPorCBU(){
+        Transferencia transferencia = getTransferencia();
+        List<Transferencia> transferencias = new ArrayList<>();
+
+        transferencias.add(transferencia);
+        when(transferenciaDao.obtenerTransferenciasPorCbu(any(Long.class))).thenReturn(transferencias);
+
+        List<Transferencia> transferenciasObtenidas = transferenciaService.obtenerTransferenciasPorCbu(123456789);
+
+        verify(transferenciaDao, times(1)).obtenerTransferenciasPorCbu(any(Long.class));
+
+        assertEquals(transferencias, transferenciasObtenidas);
     }
 
     public Cliente getCliente() {
@@ -129,6 +244,17 @@ public class TransferenciaServiceTest {
         transferenciaDto.setMoneda("ARS");
         transferenciaDto.setDescripcionBreve("Test de transferencia");
         return transferenciaDto;
+    }
+
+    public Transferencia getTransferencia() {
+        Transferencia transferencia = new Transferencia();
+        transferencia.setTipoTransferencia(TipoTransferencia.DEBITO);
+        transferencia.setCuentaOrigen(12345678);
+        transferencia.setCuentaDestino(87654321);
+        transferencia.setMonto(1000.0);
+        transferencia.setMoneda(TipoMoneda.ARS);
+        transferencia.setDescripcionBreve("Test de transferencia");
+        return transferencia;
     }
 
 }
