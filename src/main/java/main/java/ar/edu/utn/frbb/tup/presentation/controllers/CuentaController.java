@@ -26,7 +26,6 @@ public class CuentaController {
 
     @PostMapping("/crearCuenta")
     public ResponseEntity<Cuenta> crearCuenta(@RequestBody CuentaDto cuentaDto) throws ClienteNoEncontradoException{
-
         cuentaValidator.validarCuenta(cuentaDto);      
         return new ResponseEntity<>(cuentaService.darDeAltaCuenta(cuentaDto) , HttpStatus.CREATED);
     }

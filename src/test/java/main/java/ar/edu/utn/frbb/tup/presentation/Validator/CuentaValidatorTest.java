@@ -1,4 +1,4 @@
-package main.java.ar.edu.utn.frbb.tup.presentation;
+package main.java.ar.edu.utn.frbb.tup.presentation.validator;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;

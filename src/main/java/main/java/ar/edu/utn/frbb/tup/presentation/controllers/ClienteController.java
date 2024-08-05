@@ -46,19 +46,12 @@ public class ClienteController {
 
     @GetMapping("/{dni}")
     public ResponseEntity<Cliente> mostrarCliente(@PathVariable long dni) throws ClienteNoEncontradoException {
-        Cliente cliente = clienteService.mostrarCliente(dni);
-        if (cliente != null) {
-            return new ResponseEntity<>(cliente, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(clienteService.mostrarCliente(dni), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> mostrarTodosLosClientes() throws ClienteNoEncontradoException {
-        List<Cliente> clientes = clienteService.mostrarTodosLosClientes();
-        return new ResponseEntity<>(clientes, HttpStatus.OK);   
+    public ResponseEntity<List<Cliente>> getTodosLosClientes() throws ClienteNoEncontradoException {
+        return new ResponseEntity<>(clienteService.mostrarTodosLosClientes(), HttpStatus.OK);   
     }
-
 
 }

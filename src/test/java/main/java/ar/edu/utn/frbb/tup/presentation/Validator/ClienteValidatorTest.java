@@ -1,4 +1,4 @@
-package main.java.ar.edu.utn.frbb.tup.presentation;
+package main.java.ar.edu.utn.frbb.tup.presentation.validator;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 import main.java.ar.edu.utn.frbb.tup.presentation.modelDto.ClienteDto;
-import main.java.ar.edu.utn.frbb.tup.presentation.validator.ClienteValidator;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
