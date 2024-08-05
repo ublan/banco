@@ -83,6 +83,19 @@ public class ClienteServiceTest {
         verify(clienteDao, times(0)).crearCliente(any(Cliente.class));
     }
 
+    @Test
+    public void testDarDeAltaClienteMenorEdad() throws ClienteMenorEdadException {
+        ClienteDto clienteDto = getClienteDto();
+        clienteDto.setFechaNacimiento("2010-01-01");
+        Cliente cliente = new Cliente(clienteDto);
+        
+        when(clienteDao.findByDni(cliente.getDni())).thenReturn(null);
+
+        assertThrows(ClienteMenorEdadException.class, () -> ClienteService.darDeAltaCliente(clienteDto));
+
+        verify(clienteDao, times(1)).findByDni(cliente.getDni());
+        verify(clienteDao, times(0)).crearCliente(any(Cliente.class));
+    }
 
     @Test
     public void testBorrarClienteSuccess() throws ClienteNoEncontradoException {
