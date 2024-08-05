@@ -24,19 +24,17 @@ public class MovimientosController {
     public ResponseEntity<Movimiento> realizarDeposito(@PathVariable long cbu, @RequestParam double monto) throws CuentaNoEncontradaException {
         
         return new ResponseEntity<>(movimientoService.realizarDeposito(cbu, monto), HttpStatus.OK);
-
     }
 
     @PostMapping("/retiro/{cbu}")
     public ResponseEntity<Movimiento> realizarRetiro(@PathVariable long cbu, @RequestParam double monto) throws CuentaNoEncontradaException, CuentaSinSaldoException {
         
         return new ResponseEntity<>(movimientoService.realizarRetiro(cbu, monto), HttpStatus.OK);
-
     }
 
     @GetMapping("/operaciones/{cbu}")
     public ResponseEntity<List<Movimiento>> obtenerOperacionesPorCBU(@PathVariable long cbu) throws MomivientosVaciosException {
-        List<Movimiento> movimientos = movimientoService.obtenerOperacionesPorCBU(cbu);
-        return new ResponseEntity<>(movimientos, HttpStatus.OK);
+
+        return new ResponseEntity<>(movimientoService.obtenerOperacionesPorCBU(cbu), HttpStatus.OK);
     }
 }

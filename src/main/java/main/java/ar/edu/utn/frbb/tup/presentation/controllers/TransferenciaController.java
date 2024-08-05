@@ -26,8 +26,8 @@ public class TransferenciaController {
 
     @GetMapping("/cuenta/{cbu}/transacciones")
     public ResponseEntity<List<Transferencia>> obtenerTransacciones(@PathVariable long cbu) {
-        List<Transferencia> transacciones = transferenciaService.obtenerTransferenciasPorCbu(cbu);
-        return new ResponseEntity<>(transacciones, HttpStatus.OK);
+        
+        return new ResponseEntity<>(transferenciaService.obtenerTransferenciasPorCbu(cbu), HttpStatus.OK);
     }
 
     @PostMapping("/transferencia")
